@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">WifiLocator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_wifi">WifiActivity</string>
+    <string name="startWifi">Open Wifi</string>
+    <string name="closeWifi">Close Wifi</string>
+    <string name="scanWifi">Scan Wifi</string>
+
+</resources>
