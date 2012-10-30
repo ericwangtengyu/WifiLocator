@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
+import wifilocator.signature.*;
 
 /**
  * File service provider; helps to do the file operations.
@@ -65,7 +66,7 @@ public class FileService{
 	/**
 	 * 
 	 */
-	public void appendData()
+	public void appendData(Signature sig)
 	{
 		
 	}

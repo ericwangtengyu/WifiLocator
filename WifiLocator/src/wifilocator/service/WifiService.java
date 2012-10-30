@@ -141,7 +141,7 @@ public class WifiService {
 		{
 			for(int i=0;i<m_wifiList.size();i++)
 			{
-				//if(m_wifiList.get(i).SSID.equals("eduroam"))
+				if(m_wifiList.get(i).SSID.equals("eduroam"))
 				result.append(m_wifiList.get(i).toString()).append("\n");
 			}
 			return result;
