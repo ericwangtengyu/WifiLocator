@@ -56,7 +56,7 @@ public class FileService{
 	/**
 	 * 
 	 * @param fileName
-	 * @return
+	 * @return True if the file was successfully deleted; else false.
 	 */
 	public boolean deleteFile(String fileName)
 	{
