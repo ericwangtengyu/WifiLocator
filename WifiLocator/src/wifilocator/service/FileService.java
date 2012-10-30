@@ -13,7 +13,7 @@ import android.widget.Toast;
  */
 public class FileService{
 	private Context context;
-	private FileOutputStream file;
+	private FileOutputStream fileoutputstream;
 	
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class FileService{
 	 */
 	public void createFile(String fileName) throws Exception
 	{
-		file=context.openFileOutput(fileName, Context.MODE_PRIVATE);
+		fileoutputstream=context.openFileOutput(fileName, Context.MODE_PRIVATE);
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class FileService{
 		if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 		{
 			File sdFile=new File(Environment.getExternalStorageDirectory(), fileName);
-			file=new FileOutputStream(sdFile);
+			fileoutputstream=new FileOutputStream(sdFile);
 		}
 		else
 		{
@@ -83,7 +83,7 @@ public class FileService{
 	 */
 	public void closeFile() throws Exception
 	{
-		file.close();
+		fileoutputstream.close();
 	}
 	
 
