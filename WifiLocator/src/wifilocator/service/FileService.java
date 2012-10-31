@@ -20,7 +20,8 @@ public class FileService{
 	private FileOutputStream fileoutputstream;
 	
 	/**
-	 * 
+	 * Constructor function of FileService
+	 * @author Eric Wang
 	 * @param context
 	 */
 	public FileService(Context context)
@@ -29,7 +30,8 @@ public class FileService{
 	}
 	
 	/**
-	 * 
+	 * create a file specified by the fileName on internal storage of cell phone
+	 * @author Eric Wang
 	 * @param fileName
 	 * @throws Exception
 	 */
@@ -39,7 +41,8 @@ public class FileService{
 	}
 	
 	/**
-	 * 
+	 * create a file specified by the fileName on SD storage
+	 * @author Eric Wang
 	 * @param fileName
 	 * @throws Exception
 	 */

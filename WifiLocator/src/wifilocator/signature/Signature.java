@@ -1,5 +1,11 @@
 package wifilocator.signature;
 
+/**
+ * This is a class defined to store the wifi tupes 
+ * of the form{TimeStamp,SSID,BSSID,LEVEL,FREQUENCY}
+ * @author Eric
+ * @version 0
+ */
 public class Signature {
 	private String ssId;
 	private String bssId;
@@ -15,12 +21,13 @@ public class Signature {
 	 * @param level
 	 * @param frequency
 	 */
-	public Signature(String ssId,String bssId,int level, int frequency)
+	public Signature(String ssId,String bssId,int level, int frequency, long timeStamp)
 	{
 		this.ssId=ssId;
 		this.bssId=bssId;
 		this.level=level;
 		this.frequency=frequency;
+		this.timeStamp=timeStamp;
 	}
 	
 	/**
@@ -33,6 +40,7 @@ public class Signature {
 		bssId="N/A";
 		level=0;
 		frequency=0;
+		timeStamp=0;
 	}
 	
 	/**
@@ -81,5 +89,14 @@ public class Signature {
 	public int getFrequency()
 	{
 		return frequency;
+	}
+	
+	/**
+	 * @author Eric Wang
+	 * @return timeStamp
+	 */
+	public long getTimeStamp()
+	{
+		return timeStamp;
 	}
 }

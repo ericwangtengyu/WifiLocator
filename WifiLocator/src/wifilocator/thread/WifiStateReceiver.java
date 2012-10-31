@@ -29,7 +29,7 @@ public class WifiStateReceiver extends BroadcastReceiver{
 	 */
 	public WifiStateReceiver(Context context, WifiService wifiService,BlockingQueue<List<ScanResult>> eventQueue)
 	{
-		this.context=context;
+		this.setContext(context);
 		this.wifiService=wifiService;
 		this.eventQueue=eventQueue;
 	}
@@ -48,6 +48,18 @@ public class WifiStateReceiver extends BroadcastReceiver{
 				e.printStackTrace();
 			}
 		}
+	}
+	/**
+	 * @return the context
+	 */
+	public Context getContext() {
+		return context;
+	}
+	/**
+	 * @param context the context to set
+	 */
+	public void setContext(Context context) {
+		this.context = context;
 	}
 
 }

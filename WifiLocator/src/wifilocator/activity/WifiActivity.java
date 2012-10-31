@@ -1,14 +1,22 @@
 package wifilocator.activity;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.List;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.IntentFilter;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import wifilocator.service.*;
+import wifilocator.thread.WifiStateReceiver;
 
 public class WifiActivity extends Activity {
     //------widget-----//
@@ -19,15 +27,15 @@ public class WifiActivity extends Activity {
     
     private WifiService wifiService;
     private MyBtnListener btnListener;
+    private BlockingQueue<List<ScanResult>> eventQueue;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
         wifiService=new WifiService(this);
+        eventQueue=new ArrayBlockingQueue<List<ScanResult>>(100);
         initWidget();
-        initListener();
-        
-        
+        initListener();     
     }
 
     @Override
@@ -64,7 +72,12 @@ public class WifiActivity extends Activity {
     	btnListener=new MyBtnListener();
     	btn_open.setOnClickListener(btnListener);
     	btn_close.setOnClickListener(btnListener);
-    	btn_scan.setOnClickListener(btnListener);   	
+    	btn_scan.setOnClickListener(btnListener);
+    	WifiStateReceiver wifiReceiver=new WifiStateReceiver(this,wifiService,eventQueue);
+    	IntentFilter filter=new IntentFilter();
+    	filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
+    	//if you need to filter out more actions, you can add that action to the filter//
+    	this.registerReceiver(wifiReceiver, filter);
     }
     
     /**
