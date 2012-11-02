@@ -19,6 +19,7 @@ public class WifiService {
 	private WifiLock m_wifiLock;
 	private List<WifiConfiguration> m_wifiConfigList;
 	private List<ScanResult> m_wifiList;
+	private long m_timeStamp;
 	
 	/**
 	 * constructor function of WifiHelper
@@ -112,6 +113,7 @@ public class WifiService {
 	{
 		if(m_wifiManager.startScan())
 		{
+			m_timeStamp=System.currentTimeMillis();
 			m_wifiList=m_wifiManager.getScanResults();
 			m_wifiConfigList=m_wifiManager.getConfiguredNetworks();
 			return true;
@@ -141,7 +143,7 @@ public class WifiService {
 		{
 			for(int i=0;i<m_wifiList.size();i++)
 			{
-				if(m_wifiList.get(i).SSID.equals("eduroam"))
+				//if(m_wifiList.get(i).SSID.equals("eduroam"))
 				result.append(m_wifiList.get(i).toString()).append("\n");
 			}
 			return result;
@@ -209,6 +211,14 @@ public class WifiService {
 	     return r1&r2;
 	}
 	
+	/**
+	 * @author Eric Wang
+	 * @return timeStamp of the scanning event
+	 */
+	public long getTimeStamp()
+	{
+		return m_timeStamp;
+	}
 
 }
 

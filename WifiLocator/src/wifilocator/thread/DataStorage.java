@@ -3,22 +3,24 @@
  */
 package wifilocator.thread;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-import android.net.wifi.ScanResult;
 import wifilocator.service.FileService;
+import wifilocator.service.WifiService;
+import wifilocator.signature.*;
 
 /**
- * @author Eric
+ * @author Eric Wang
  *
  */
 public class DataStorage implements Runnable {
 	private FileService fileService;
-	private BlockingQueue<List<ScanResult>> eventQueue;
-	public DataStorage(FileService fileService, BlockingQueue<List<ScanResult>> eventQueue)
+	private WifiService wifiService;
+	private BlockingQueue<Signature> eventQueue;
+	public DataStorage(FileService fileService,WifiService wifiService,BlockingQueue<Signature> eventQueue)
 	{
 		this.setFileService(fileService);
+		this.setWifiService(wifiService);
 		this.setEventQueue(eventQueue);
 	}
 	
@@ -28,8 +30,11 @@ public class DataStorage implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			List<ScanResult> wifiList=eventQueue.take();// whether it is final, do I need to copy out its value
-			//fileService.appendData(wifiList, timeStamp);
+			while(true)
+			{
+				Signature s=eventQueue.take();
+				fileService.appendData(s);
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,15 +58,29 @@ public class DataStorage implements Runnable {
 	/**
 	 * @return the eventQueue
 	 */
-	public BlockingQueue<List<ScanResult>> getEventQueue() {
+	public BlockingQueue<Signature> getEventQueue() {
 		return eventQueue;
 	}
 
 	/**
 	 * @param eventQueue the eventQueue to set
 	 */
-	public void setEventQueue(BlockingQueue<List<ScanResult>> eventQueue) {
+	public void setEventQueue(BlockingQueue<Signature> eventQueue) {
 		this.eventQueue = eventQueue;
+	}
+
+	/**
+	 * @return the wifiService
+	 */
+	public WifiService getWifiService() {
+		return wifiService;
+	}
+
+	/**
+	 * @param wifiService the wifiService to set
+	 */
+	public void setWifiService(WifiService wifiService) {
+		this.wifiService = wifiService;
 	}
 
 }

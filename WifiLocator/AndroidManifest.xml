@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.DEVICE_POWER"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
     
 
     <application
@@ -22,6 +23,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".WifiActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_wifi" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

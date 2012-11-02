@@ -1,102 +1,68 @@
+/**
+ * 
+ */
 package wifilocator.signature;
 
+import java.util.ArrayList;
+import java.util.List;
+import android.net.wifi.ScanResult;
+
 /**
- * This is a class defined to store the wifi tupes 
- * of the form{TimeStamp,SSID,BSSID,LEVEL,FREQUENCY}
  * @author Eric
- * @version 0
+ *
  */
 public class Signature {
-	private String ssId;
-	private String bssId;
-	private int level;
-	private int frequency;
+
+	private List<SignatureForm> sigList;
 	private long timeStamp;
 	
-	/**
-	 * Constructor function of Signature
-	 * @author Eric Wang
-	 * @param ssId
-	 * @param bssId
-	 * @param level
-	 * @param frequency
-	 */
-	public Signature(String ssId,String bssId,int level, int frequency, long timeStamp)
+	public Signature(List<ScanResult> wifiList, long timeStamp)
 	{
-		this.ssId=ssId;
-		this.bssId=bssId;
-		this.level=level;
-		this.frequency=frequency;
+		//sigList=new List<SignatureForm>();
+		sigList=new ArrayList<SignatureForm>();
+		for(int i=0;i<wifiList.size();i++)
+		{
+			SignatureForm tuple=new SignatureForm(wifiList.get(i).SSID,wifiList.get(i).BSSID,wifiList.get(i).level,wifiList.get(i).frequency);
+			sigList.add(tuple);
+		}
 		this.timeStamp=timeStamp;
 	}
 	
 	/**
-	 * Constructor function without parameters
-	 * @author Eric Wang
+	 * @return the sigList
 	 */
-	public Signature()
-	{
-		ssId="N/A";
-		bssId="N/A";
-		level=0;
-		frequency=0;
-		timeStamp=0;
+	public List<SignatureForm> getSigList() {
+		return sigList;
+	}
+	/**
+	 * @param sigList the sigList to set
+	 */
+	public void setSigList(List<SignatureForm> sigList) {
+		this.sigList = sigList;
+	}
+	/**
+	 * @return the timeStamp
+	 */
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+	/**
+	 * @param timeStamp the timeStamp to set
+	 */
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 	
-	/**
-	 * Convert Signature to string
-	 * @author Eric Wang
-	 * @return signature of String form
-	 */
 	public String toString()
 	{
 		StringBuilder str=new StringBuilder();
-		str.append(ssId).append(",").append(bssId).append(",").append(level).append(",").append(frequency).append("\r\n");
+		str.append(timeStamp).append("\r\n");
+		for(int i=0;i<sigList.size();i++)
+		{
+			str.append(sigList.get(i).toString());
+		}
+		str.append("\r\n");
 		return str.toString();
 	}
 	
-	/**
-	 * @author Eric Wang
-	 * @return ssId
-	 */
-	public String getSSID()
-	{
-		return ssId;
-	}
-	
-	/**
-	 * @author Eric Wang
-	 * @return bssId
-	 */
-	public String getBSSID()
-	{
-		return bssId;
-	}
-	
-	/**
-	 * @author Eric Wang
-	 * @return level
-	 */
-	public int getLevel()
-	{
-		return level;
-	}
-	
-	/**
-	 * @author Eric Wang
-	 * @return frequency
-	 */
-	public int getFrequency()
-	{
-		return frequency;
-	}
-	
-	/**
-	 * @author Eric Wang
-	 * @return timeStamp
-	 */
-	public long getTimeStamp()
-	{
-		return timeStamp;
-	}
 }

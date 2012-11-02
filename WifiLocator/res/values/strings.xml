@@ -7,5 +7,6 @@
     <string name="startWifi">Open Wifi</string>
     <string name="closeWifi">Close Wifi</string>
     <string name="scanWifi">Scan Wifi</string>
+    <string name="stopScan">Stop Scan</string>
 
 </resources>

@@ -3,11 +3,9 @@ package wifilocator.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
-import android.net.wifi.ScanResult;
 import wifilocator.signature.*;
 
 /**
@@ -76,16 +74,12 @@ public class FileService{
 	 * @param wifiList
 	 * @param timeStamp
 	 */
-	public void appendData(List<ScanResult> wifiList, long timeStamp)
+	public void appendData(Signature sig)
 	{
-		StringBuilder str=new StringBuilder();
-		for(int i=0;i<wifiList.size();i++)
-		{
-			Signature sig=new Signature(wifiList.get(i).SSID,wifiList.get(i).BSSID,wifiList.get(i).level,wifiList.get(i).frequency,timeStamp);
-			str.append(sig.toString());
-		}
+		String str;
+		str=sig.toString();
 		try {
-			fileoutputstream.write(str.toString().getBytes());
+			fileoutputstream.write(str.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

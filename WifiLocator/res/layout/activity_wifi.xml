@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/wifilocator"
+    android:id="@+id/wifiLocator"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -16,25 +16,42 @@
         android:id="@+id/closeWifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/stopScan"
+        android:layout_alignParentRight="true"
         android:text="@string/closeWifi" />
 
     <Button
         android:id="@+id/scanWifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/openWifi"
         android:text="@string/scanWifi" />
 
     <TextView
         android:id="@+id/wifiList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/openWifi"
-        android:layout_marginTop="62dp"
+        android:layout_alignLeft="@+id/scanWifi"
+        android:layout_below="@+id/scanWifi"
+        android:layout_marginTop="34dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/stopScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/scanWifi"
+        android:layout_alignBottom="@+id/scanWifi"
+        android:layout_alignParentRight="true"
+        android:text="@string/stopScan" />
+
+    <ProgressBar
+        android:id="@+id/scanning"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/stopScan"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
