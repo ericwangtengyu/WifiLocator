@@ -68,6 +68,7 @@ public class WifiActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		wifiService.closeWifi();
 		try {
 			this.unregisterReceiver(wifiStateReceiver);
 			fileService.closeFile();
@@ -75,7 +76,6 @@ public class WifiActivity extends Activity {
 			// TODO Auto-generated catch block;
 			e.printStackTrace();
 		}
-		wifiService.closeWifi();
 	}
     
     /**
@@ -88,10 +88,7 @@ public class WifiActivity extends Activity {
         wifiService=new WifiService(this);
         fileService=new FileService(this);
         eventQueue=new ArrayBlockingQueue<Signature>(100);
-	    /* timeStamp is stored in wifiService,
-	     * this is why dataStorage will need a paramater wifiService,
-	     * there may be other ways to handle the communication between threads.*/
-        dataStorage=new DataStorage(fileService,wifiService,eventQueue);
+        dataStorage=new DataStorage(fileService,eventQueue);
         wifiStateReceiver=new WifiStateReceiver(this,wifiService,eventQueue);     
         consumer=new Thread(dataStorage);
         consumer.setName("dataStorage");

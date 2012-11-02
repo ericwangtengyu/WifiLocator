@@ -6,7 +6,6 @@ package wifilocator.thread;
 import java.util.concurrent.BlockingQueue;
 
 import wifilocator.service.FileService;
-import wifilocator.service.WifiService;
 import wifilocator.signature.*;
 
 /**
@@ -15,12 +14,10 @@ import wifilocator.signature.*;
  */
 public class DataStorage implements Runnable {
 	private FileService fileService;
-	private WifiService wifiService;
 	private BlockingQueue<Signature> eventQueue;
-	public DataStorage(FileService fileService,WifiService wifiService,BlockingQueue<Signature> eventQueue)
+	public DataStorage(FileService fileService,BlockingQueue<Signature> eventQueue)
 	{
 		this.setFileService(fileService);
-		this.setWifiService(wifiService);
 		this.setEventQueue(eventQueue);
 	}
 	
@@ -67,20 +64,6 @@ public class DataStorage implements Runnable {
 	 */
 	public void setEventQueue(BlockingQueue<Signature> eventQueue) {
 		this.eventQueue = eventQueue;
-	}
-
-	/**
-	 * @return the wifiService
-	 */
-	public WifiService getWifiService() {
-		return wifiService;
-	}
-
-	/**
-	 * @param wifiService the wifiService to set
-	 */
-	public void setWifiService(WifiService wifiService) {
-		this.wifiService = wifiService;
 	}
 
 }
