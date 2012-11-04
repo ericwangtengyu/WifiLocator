@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.net.wifi.ScanResult;
-import android.widget.Toast;
 import wifilocator.service.WifiService;
 import wifilocator.signature.*;
 
@@ -20,7 +19,7 @@ public class WifiStateReceiver extends BroadcastReceiver{
 	private Context context;
 	private WifiService wifiService;
     private BlockingQueue<Signature> eventQueue;
-    //private BlockingQueue<List<ScanResult>> memoryQueue;
+    private BlockingQueue<Signature> memoryQueue;
     
 	/**
 	 * constructor function of class WifiStateReceiver
@@ -29,23 +28,26 @@ public class WifiStateReceiver extends BroadcastReceiver{
 	 * @param wifiService
 	 * @param eventQueue
 	 */
-	public WifiStateReceiver(Context context, WifiService wifiService,BlockingQueue<Signature> eventQueue)
+	public WifiStateReceiver(Context context, WifiService wifiService,BlockingQueue<Signature> eventQueue,BlockingQueue<Signature> memoryQueue)
 	{
 		this.setContext(context);
 		this.wifiService=wifiService;
 		this.eventQueue=eventQueue;
+		this.memoryQueue=memoryQueue;
 	}
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		String action=intent.getAction();
-		if(action.equals(WifiManager.RSSI_CHANGED_ACTION))
+		if(action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION))
 		{
 			wifiService.startScan();
-			Toast.makeText(context, "RSSI value changed", Toast.LENGTH_SHORT).show();
 			List<ScanResult> wifiList=wifiService.getWifiList();
-			Signature s=new Signature(wifiList,System.currentTimeMillis());
+			if(wifiList==null) return;
 			try {
+				Signature s=memoryQueue.take();
+				s.setSigList_s(wifiList);
+				s.setTimeStamp(System.currentTimeMillis());
 				eventQueue.put(s);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

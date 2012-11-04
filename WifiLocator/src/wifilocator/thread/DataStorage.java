@@ -15,10 +15,12 @@ import wifilocator.signature.*;
 public class DataStorage implements Runnable {
 	private FileService fileService;
 	private BlockingQueue<Signature> eventQueue;
-	public DataStorage(FileService fileService,BlockingQueue<Signature> eventQueue)
+	private BlockingQueue<Signature> memoryQueue;
+	public DataStorage(FileService fileService,BlockingQueue<Signature> eventQueue,BlockingQueue<Signature> memoryQueue)
 	{
 		this.setFileService(fileService);
 		this.setEventQueue(eventQueue);
+		this.setMemoryQueue(memoryQueue);
 	}
 	
 	/* (non-Javadoc)
@@ -31,6 +33,7 @@ public class DataStorage implements Runnable {
 			{
 				Signature s=eventQueue.take();
 				fileService.appendData(s);
+				memoryQueue.put(s);
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -64,6 +67,20 @@ public class DataStorage implements Runnable {
 	 */
 	public void setEventQueue(BlockingQueue<Signature> eventQueue) {
 		this.eventQueue = eventQueue;
+	}
+
+	/**
+	 * @return the memoryQueue
+	 */
+	public BlockingQueue<Signature> getMemoryQueue() {
+		return memoryQueue;
+	}
+
+	/**
+	 * @param memoryQueue the memoryQueue to set
+	 */
+	public void setMemoryQueue(BlockingQueue<Signature> memoryQueue) {
+		this.memoryQueue = memoryQueue;
 	}
 
 }

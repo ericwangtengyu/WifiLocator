@@ -18,16 +18,27 @@ public class Signature {
 	
 	public Signature(List<ScanResult> wifiList, long timeStamp)
 	{
-		//sigList=new List<SignatureForm>();
 		sigList=new ArrayList<SignatureForm>();
-		for(int i=0;i<wifiList.size();i++)
-		{
-			SignatureForm tuple=new SignatureForm(wifiList.get(i).SSID,wifiList.get(i).BSSID,wifiList.get(i).level,wifiList.get(i).frequency);
-			sigList.add(tuple);
-		}
+		setSigList_s(wifiList);
 		this.timeStamp=timeStamp;
 	}
 	
+	public Signature()
+	{
+		sigList=new ArrayList<SignatureForm>();
+		this.timeStamp=0;
+	}
+	
+	/**
+	 * Clone a Signature
+	 * @param s ,the signature need to be cloned
+	 * @author Eric Wang
+	 */
+	public void clone(Signature s)
+	{
+		this.setSigList(s.sigList);
+		this.setTimeStamp(s.timeStamp);
+	}
 	/**
 	 * @return the sigList
 	 */
@@ -40,6 +51,21 @@ public class Signature {
 	public void setSigList(List<SignatureForm> sigList) {
 		this.sigList = sigList;
 	}
+	
+	/**
+	 * Set List<'SignatureForm'> by List<'ScanResult'> 
+	 * @param  a list of scan results of the latest wifi access point scan
+	 * @author Eric Wang
+	 */
+	public void setSigList_s(List<ScanResult> wifiList)
+	{
+		for(int i=0;i<wifiList.size();i++)
+		{
+			SignatureForm tuple=new SignatureForm(wifiList.get(i).SSID,wifiList.get(i).BSSID,wifiList.get(i).level,wifiList.get(i).frequency);
+			sigList.add(tuple);
+		}
+	}
+	
 	/**
 	 * @return the timeStamp
 	 */
@@ -53,6 +79,10 @@ public class Signature {
 		this.timeStamp = timeStamp;
 	}
 	
+	/**
+	 * Convert a Signature to String.
+	 * @author Eric Wang
+	 */
 	public String toString()
 	{
 		StringBuilder str=new StringBuilder();

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wifiLocator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:scrollbars="vertical" >
 
     <Button
         android:id="@+id/openWifi"
@@ -27,15 +28,6 @@
         android:layout_below="@+id/openWifi"
         android:text="@string/scanWifi" />
 
-    <TextView
-        android:id="@+id/wifiList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/scanWifi"
-        android:layout_below="@+id/scanWifi"
-        android:layout_marginTop="34dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <Button
         android:id="@+id/stopScan"
         android:layout_width="wrap_content"
@@ -53,5 +45,16 @@
         android:layout_alignBottom="@+id/stopScan"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/wifiList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/scanWifi"
+        android:layout_marginTop="28dp"
+        android:scrollbars="vertical"
+        android:maxLines="18" 
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
