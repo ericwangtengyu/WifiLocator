@@ -4,28 +4,37 @@
 package wifilocator.signature;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.net.wifi.ScanResult;
 
 /**
+ * 
  * @author Eric
- *
+ * @version 0
  */
 public class Signature {
 
 	private List<SignatureForm> sigList;
+	// The map collection is used to help us get the intersection between Signature
+	private Map<String,Integer> bssId_level;
 	private long timeStamp;
 	
 	public Signature(List<ScanResult> wifiList, long timeStamp)
 	{
 		sigList=new ArrayList<SignatureForm>();
+		bssId_level=new HashMap<String,Integer>();
 		setSigList_s(wifiList);
+		setHashMap();
 		this.timeStamp=timeStamp;
 	}
 	
 	public Signature()
 	{
 		sigList=new ArrayList<SignatureForm>();
+		bssId_level=new HashMap<String,Integer>();
 		this.timeStamp=0;
 	}
 	
@@ -38,6 +47,7 @@ public class Signature {
 	{
 		this.setSigList(s.sigList);
 		this.setTimeStamp(s.timeStamp);
+		this.setHashMap();
 	}
 	/**
 	 * @return the sigList
@@ -66,6 +76,19 @@ public class Signature {
 		}
 	}
 	
+	public void setHashMap()
+	{
+		for(int i=0;i<sigList.size();i++)
+		{
+			bssId_level.put(sigList.get(i).getBSSID(), sigList.get(i).getLevel());
+		}
+	}
+	
+	public Map<String,Integer> getHashMap()
+	{
+		return bssId_level;
+	}
+	
 	/**
 	 * @return the timeStamp
 	 */
@@ -86,8 +109,8 @@ public class Signature {
 	public String toString()
 	{
 		StringBuilder str=new StringBuilder();
-		str.append(timeStamp).append("\r\n");
-		for(int i=0;i<sigList.size();i++)
+		str.append(timeStamp).append(",");
+		for(int i=1;i<sigList.size();i++)
 		{
 			str.append(sigList.get(i).toString());
 		}

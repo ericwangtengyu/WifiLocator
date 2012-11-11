@@ -43,7 +43,7 @@ public class WifiStateReceiver extends BroadcastReceiver{
 		{
 			wifiService.startScan();
 			List<ScanResult> wifiList=wifiService.getWifiList();
-			if(wifiList==null) return;
+			if(wifiList.size()==0) return;
 			try {
 				Signature s=memoryQueue.take();
 				s.setSigList_s(wifiList);

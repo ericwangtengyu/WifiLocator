@@ -52,9 +52,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/scanWifi"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="102dp"
+        android:maxEms="20"
+        android:maxLines="18"
         android:scrollbars="vertical"
-        android:maxLines="18" 
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/roomLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/scanWifi"
+        android:layout_marginTop="30dp"
+        android:text="@string/roomLabel"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/roomText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/roomLabel"
+        android:layout_alignBottom="@+id/roomLabel"
+        android:layout_toRightOf="@+id/roomLabel"
+        android:ems="10"
+        android:inputType="text|number" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

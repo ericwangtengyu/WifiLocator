@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.wifi.WifiManager;
@@ -32,6 +34,7 @@ public class WifiActivity extends Activity {
     private Button btn_stop_scan;
     private TextView wifilist_text;
     private ProgressBar scanning_bar;
+    private EditText roomnum_text;
     
     private WifiService wifiService;
     private FileService fileService;
@@ -64,12 +67,12 @@ public class WifiActivity extends Activity {
         initWidget();
         initListener();
         
-        try {
-			fileService.createFileOnSD("wifiData.csv");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//        try {
+//			fileService.createFileOnSD("wifiData");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     }
 
     @Override
@@ -87,6 +90,7 @@ public class WifiActivity extends Activity {
 		if(uiUpdateTask!=null)
 		   uiUpdateTask.cancel();
 		timer.cancel();
+		wifiService.closeWifi();
 		try {
 			//this.unregisterReceiver(wifiStateReceiver);
 			fileService.closeFile();
@@ -94,7 +98,7 @@ public class WifiActivity extends Activity {
 			// TODO Auto-generated catch block;
 			e.printStackTrace();
 		}
-		wifiService.closeWifi();
+		Toast.makeText(this, "OnDestroy", Toast.LENGTH_SHORT).show();
 	}
     
     /**
@@ -106,9 +110,9 @@ public class WifiActivity extends Activity {
     	context=this;
         wifiService=new WifiService(this);
         fileService=new FileService(this);
-        eventQueue=new ArrayBlockingQueue<Signature>(100);
-        memoryQueue=new ArrayBlockingQueue<Signature>(100);
-        for(int i=0;i<100;i++)
+        eventQueue=new ArrayBlockingQueue<Signature>(10);
+        memoryQueue=new ArrayBlockingQueue<Signature>(10);
+        for(int i=0;i<10;i++)
         {
         	Signature s=new Signature();
         	try {
@@ -162,6 +166,7 @@ public class WifiActivity extends Activity {
     	wifilist_text=(TextView)findViewById(R.id.wifiList);
     	wifilist_text.setMovementMethod(ScrollingMovementMethod.getInstance());
     	scanning_bar=(ProgressBar)findViewById(R.id.scanning);
+    	roomnum_text=(EditText)findViewById(R.id.roomText);
     }
     
     /**
@@ -204,17 +209,17 @@ public class WifiActivity extends Activity {
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
 	        	   //context.registerReceiver(wifiStateReceiver, filter);
-	        	   wifiService.startScan();
-	        	   if(wifiScanTask==null)
-	        	   {
-	        		   wifiScanTask=new WifiScanTask(wifiService,eventQueue,memoryQueue);
-	        		   timer.scheduleAtFixedRate(wifiScanTask, 0, 1000);
-	        	   }
-	        	   if(uiUpdateTask==null)
-	        	   {
-	        		   uiUpdateTask=new UIUpdateTask(handler);
-	        		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 1000);
-	        	   }
+	             try {
+	   			   fileService.createFileOnSD(roomnum_text.getText().toString());
+	   		        } catch (Exception e) {
+	   			   // TODO Auto-generated catch block
+	   			   e.printStackTrace();
+	   		       }
+	        	   //wifiService.startScan();
+        		   wifiScanTask=new WifiScanTask(wifiService,eventQueue,memoryQueue);
+        		   timer.scheduleAtFixedRate(wifiScanTask, 0, 1000);
+        		   uiUpdateTask=new UIUpdateTask(handler);
+        		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 1000);
 	        	   if(!consumer.isAlive())
 	        	   consumer.start();
 	        	   displayAllWifiList();
@@ -227,6 +232,12 @@ public class WifiActivity extends Activity {
 	        	   if(uiUpdateTask!=null)
 	        		   uiUpdateTask.cancel();
 	        	   btn_scan.setEnabled(true);
+	        	   wifilist_text.setText("");
+	        	   try {
+	       			fileService.closeFile();
+	       		    } catch (Exception e) {
+	       			  e.printStackTrace();
+	       		    }
 	        	   break;
 	           case R.id.openWifi: 
 	        	   wifiService.openWifi();

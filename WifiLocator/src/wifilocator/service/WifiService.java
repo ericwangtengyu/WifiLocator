@@ -1,5 +1,6 @@
 package wifilocator.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.net.wifi.ScanResult;
@@ -20,6 +21,7 @@ public class WifiService {
 	private List<WifiConfiguration> m_wifiConfigList;
 	private List<ScanResult> m_wifiList;
 	private long m_timeStamp;
+	private List<ScanResult> m_wholeList;
 	
 	/**
 	 * constructor function of WifiHelper
@@ -29,6 +31,7 @@ public class WifiService {
 	public WifiService(Context context)
 	{
 		m_wifiManager=(WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+		m_wifiList=new ArrayList<ScanResult>();
 		//m_wifiInfo=m_wifiManager.getConnectionInfo();	
 	}
 	
@@ -114,7 +117,15 @@ public class WifiService {
 		if(m_wifiManager.startScan())
 		{
 			m_timeStamp=System.currentTimeMillis();
-			m_wifiList=m_wifiManager.getScanResults();
+			m_wholeList=m_wifiManager.getScanResults();
+			m_wifiList.clear();
+			if(m_wholeList!=null) 
+			{	for(int i=0;i<m_wholeList.size();i++)
+				{
+					if(m_wholeList.get(i).SSID.equals("eduroam"))
+					m_wifiList.add(m_wholeList.get(i));
+				}
+			}
 			m_wifiConfigList=m_wifiManager.getConfiguredNetworks();
 			return true;
 		}
@@ -139,14 +150,9 @@ public class WifiService {
 	public StringBuilder getWifiListInString()
 	{
 		StringBuilder result=new StringBuilder();
-		if(m_wifiList!=null)
+        for(int i=0;i<m_wifiList.size();i++)
 		{
-			for(int i=0;i<m_wifiList.size();i++)
-			{
-				//if(m_wifiList.get(i).SSID.equals("eduroam"))
-				result.append(m_wifiList.get(i).toString()).append("\n");
-			}
-			return result;
+			result.append(m_wifiList.get(i).toString()).append("\n");
 		}
 		return result;
 	}

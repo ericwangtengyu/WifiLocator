@@ -1,5 +1,7 @@
 package wifilocator.signature;
 
+
+
 /**
  * This is a class defined to store the wifi tupes 
  * of the form{TimeStamp,SSID,BSSID,LEVEL,FREQUENCY}
@@ -48,7 +50,8 @@ public class SignatureForm {
 	public String toString()
 	{
 		StringBuilder str=new StringBuilder();
-		str.append(ssId).append(",").append(bssId).append(",").append(level).append(",").append(frequency).append("\r\n");
+		//str.append(ssId).append(",").append(bssId).append(",").append(level).append(",").append(frequency).append("\r\n");
+		str.append(bssId).append(",").append(level).append(",");
 		return str.toString();
 	}
 	

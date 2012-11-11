@@ -8,5 +8,6 @@
     <string name="closeWifi">Close Wifi</string>
     <string name="scanWifi">Scan Wifi</string>
     <string name="stopScan">Stop Scan</string>
+    <string name="roomLabel">Room:</string>
 
 </resources>
