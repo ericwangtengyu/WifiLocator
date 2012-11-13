@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -66,13 +68,6 @@ public class WifiActivity extends Activity {
         initVariable();
         initWidget();
         initListener();
-        
-//        try {
-//			fileService.createFileOnSD("wifiData");
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
     }
 
     @Override
