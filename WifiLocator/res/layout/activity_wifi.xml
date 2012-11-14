@@ -58,27 +58,15 @@
         android:scrollbars="vertical"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/roomLabel"
+    <ImageView
+        android:id="@+id/mapView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/scanWifi"
-        android:layout_marginTop="30dp"
-        android:text="@string/roomLabel"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/roomText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/roomLabel"
-        android:layout_alignBottom="@+id/roomLabel"
-        android:layout_toRightOf="@+id/roomLabel"
-        android:ems="10"
-        android:inputType="text|number" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_marginTop="34dp"
+        android:src="@android:drawable/screen_background_light_transparent" />
 
 </RelativeLayout>

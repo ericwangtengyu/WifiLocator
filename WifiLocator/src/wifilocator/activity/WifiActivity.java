@@ -37,6 +37,8 @@ public class WifiActivity extends Activity {
     private TextView wifilist_text;
     private ProgressBar scanning_bar;
     private EditText roomnum_text;
+    private ImageView map_image;
+    
     
     private WifiService wifiService;
     private FileService fileService;
@@ -161,7 +163,7 @@ public class WifiActivity extends Activity {
     	wifilist_text=(TextView)findViewById(R.id.wifiList);
     	wifilist_text.setMovementMethod(ScrollingMovementMethod.getInstance());
     	scanning_bar=(ProgressBar)findViewById(R.id.scanning);
-    	roomnum_text=(EditText)findViewById(R.id.roomText);
+    	map_image=(ImageView)findViewById(R.id.mapView);
     }
     
     /**
