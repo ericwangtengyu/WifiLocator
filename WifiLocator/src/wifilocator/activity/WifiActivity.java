@@ -139,7 +139,7 @@ public class WifiActivity extends Activity {
         powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
         mapLoader=new MapLoader(context,map_image);
-        mapLoader.loadMap(R.drawable.smallmap);
+        mapLoader.loadMap(R.drawable.seaman);
 
     }
     
