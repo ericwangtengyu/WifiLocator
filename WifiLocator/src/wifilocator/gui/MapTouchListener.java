@@ -14,14 +14,12 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 
 /**
+ * Listener for Touch Event on the map
  * @author Eric
- *
+ * @version 0
  */
 public class MapTouchListener implements OnTouchListener{
 
-	/* (non-Javadoc)
-	 * @see android.view.View.OnTouchListener#onTouch(android.view.View, android.view.MotionEvent)
-	 */
 	private static int NONE=0;
 	private static int DRAG=1;
 	private static int ZOOM=2;
@@ -36,7 +34,12 @@ public class MapTouchListener implements OnTouchListener{
 	private ImageView map_image;
 	private Bitmap map;
 	
-	
+	/**
+	 * Constructor function
+	 * @author Eric Wang
+	 * @param map_image
+	 * @param map
+	 */
 	public MapTouchListener(ImageView map_image,Bitmap map)
 	{
 		currentMatrix=new Matrix();
@@ -49,6 +52,12 @@ public class MapTouchListener implements OnTouchListener{
 		this.map=map;
 		map_image.setImageMatrix(currentMatrix);
 	}
+	
+	/**
+	 * Implementation of OnTouch function in OnTouchListener interface
+	 * Process Drag, and Zoom
+	 * @author Eric Wang
+	 */
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		switch(event.getAction()&MotionEvent.ACTION_MASK)
@@ -92,6 +101,13 @@ public class MapTouchListener implements OnTouchListener{
 		map_image.setImageMatrix(currentMatrix);
 		return true;
 	}
+	
+	/**
+	 * Get the distance between 2 points in a muli-Touch motion Event
+	 * @author Eric Wang
+	 * @param event MotionEvent 
+	 * @return distance between 2 points
+	 */
 	public float distance(MotionEvent event)
 	{
 		float x =event.getX(0) - event.getX(1);
@@ -99,11 +115,21 @@ public class MapTouchListener implements OnTouchListener{
 		return FloatMath.sqrt(x*x+y*y);
 	}
 	
+	/**
+	 * Get the mid Point between 2 points in a multi-Touch motion Event
+	 * @author Eric Wang
+	 * @param point result middle point is stored here
+	 * @param event MotionEvent
+	 */
 	private void midPoint(PointF point, MotionEvent event) {
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
         point.set(x/2, y/2);
     }
+	
+	/**
+	 * 
+	 */
 	private void minZoom() {
         float minScaleR = Math.min(
                 (float) map_image.getWidth() / (float) map.getWidth(),

@@ -9,8 +9,9 @@ import java.util.List;
 import android.graphics.PointF;
 
 /**
+ * Provides basic methods to calculate user's Location
  * @author Eric
- *
+ * @version 0
  */
 public class UserLocation {
 
@@ -20,6 +21,12 @@ public class UserLocation {
 	private Signature userSig;
 	private DistanceMetric distanceMetric;
 	
+	/**
+	 * Constructor of UserLocation
+	 * @author Eric Wang
+	 * @param refSigList reference signature database
+	 * @param userSig user signature
+	 */
 	public UserLocation(List<Signature> refSigList,Signature userSig)
 	{
 		this.setRefSigList(refSigList);
@@ -29,6 +36,11 @@ public class UserLocation {
 		distanceMetric=new DistanceMetric(-100);
 	}
 	
+	/**
+	 * Calculate the location of user
+	 * @author Eric Wang
+	 * @return User Location
+	 */
 	public PointF getLocation()
 	{
 		int k=4;
@@ -37,6 +49,12 @@ public class UserLocation {
 		return pLocation;
 	}
 	
+	/**
+	 * Choose K-Nearest reference signature from the Reference Database
+	 * @author Eric Wang
+	 * @param k 
+	 * @return
+	 */
 	public List<Signature> K_nearest(int k)
 	{
 		List<Signature> k_refSigList=new ArrayList<Signature>(k);
@@ -73,11 +91,17 @@ public class UserLocation {
 		
 		return k_refSigList;
 	}
-	//DO I need to transform it to int?
+	
+	/**
+	 * Calculate the centroid of a List of reference Signatures
+	 * @author Eric Wang
+	 * @param refSigList a list of reference Signatures
+	 */
 	public void Centroid(List<Signature> refSigList)
 	{
 		float sumX=0;
 		float sumY=0;
+		//DO I need to transform it to int?
 		int size=refSigList.size();
 		for(int i=0;i<size;i++)
 		{

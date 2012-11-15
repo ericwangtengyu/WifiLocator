@@ -8,16 +8,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 /**
- * @author Eric
- *
+ * UI class to draw the user location onto map
+ * @author Eric Wang
+ * @version 0
  */
-import android.graphics.drawable.*;
 public class LocationDraw {
 
 	private Bitmap map;
 	private Canvas canvas;
 	private int x;
 	private int y;
+	/**
+	 * Constructor fuction
+	 * @param map  here map is served as our canvas
+	 * @author Eric Wang
+	 */
 	public LocationDraw(Bitmap map)
 	{
 		this.setMap(map);

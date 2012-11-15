@@ -12,8 +12,9 @@ import android.graphics.Paint;
 import android.widget.ImageView;
 
 /**
+ * UI class to load the map
  * @author Eric
- *
+ * @version 0
  */
 public class MapLoader {
 
@@ -22,12 +23,22 @@ public class MapLoader {
 	private Bitmap map;
 	private MapTouchListener mapTouchListener;
 	
+	/**
+	 * Contructor fuction
+	 * @author Eric Wang
+	 * @param context 
+	 * @param mapView
+	 */
 	public MapLoader(Context context,ImageView mapView)
 	{
 		this.setContext(context);
 		this.setMapView(mapView);
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 */
 	public void loadMap(int id)
 	{
 		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
