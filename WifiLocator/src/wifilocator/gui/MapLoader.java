@@ -3,10 +3,12 @@
  */
 package wifilocator.gui;
 
-import wifilocator.activity.*;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.widget.ImageView;
 
 /**
@@ -26,12 +28,16 @@ public class MapLoader {
 		this.setMapView(mapView);
 	}
 	
-	public void loadMap(String path)
+	public void loadMap(int id)
 	{
-		map=BitmapFactory.decodeResource(context.getResources(),R.drawable.smallmap);
+		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		mapView.setImageBitmap(map);
+		mapTouchListener=new MapTouchListener(mapView,map);
 		mapView.setOnTouchListener(mapTouchListener);
-		
+//		Canvas canvas=new Canvas(map);
+//		Paint paint = new Paint();  
+//        paint.setColor(Color.RED);
+//        canvas.drawCircle(100, 100, 10, paint);
 	}
 
 	/**
@@ -62,5 +68,9 @@ public class MapLoader {
 		this.context = context;
 	}
 	
+	public void setMapTouchListener(MapTouchListener mapTouchListener)
+	{
+		this.mapTouchListener=mapTouchListener;
+	}
 	
 }

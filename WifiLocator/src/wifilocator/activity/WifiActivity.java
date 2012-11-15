@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.wifi.WifiManager;
+import wifilocator.gui.MapLoader;
+import wifilocator.gui.MapTouchListener;
 import wifilocator.service.*;
 import wifilocator.signature.*;
 import wifilocator.thread.*;
@@ -62,13 +64,16 @@ public class WifiActivity extends Activity {
     
     private PowerManager powerManager;
 	private WakeLock wakeLock;
+	//GUI part
+	private MapLoader mapLoader;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
         
-        initVariable();
         initWidget();
+        initVariable();
         initListener();
     }
 
@@ -133,6 +138,9 @@ public class WifiActivity extends Activity {
         timer=new Timer();
         powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
+        mapLoader=new MapLoader(context,map_image);
+        mapLoader.loadMap(R.drawable.smallmap);
+
     }
     
 
