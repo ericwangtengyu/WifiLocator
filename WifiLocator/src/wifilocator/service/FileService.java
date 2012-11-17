@@ -1,12 +1,17 @@
 package wifilocator.service;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
+import android.graphics.PointF;
 import android.os.Environment;
 import android.widget.Toast;
 import wifilocator.signature.*;
@@ -18,7 +23,9 @@ import wifilocator.signature.*;
  */
 public class FileService{
 	private Context context;
-	private FileOutputStream fileoutputstream;
+	private FileOutputStream fos;
+	private FileReader fr;
+	private BufferedReader br;
 	
 	/**
 	 * Constructor function of FileService
@@ -38,7 +45,7 @@ public class FileService{
 	 */
 	public void createFile(String fileName) throws Exception
 	{
-		fileoutputstream=context.openFileOutput(fileName, Context.MODE_PRIVATE);
+		fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
 	}
 	
 	/**
@@ -53,7 +60,7 @@ public class FileService{
 		{
 			//File sdfile=new File(Environment.getExternalStorageDirectory(),getDateFormat()+".csv");
 			File sdfile=new File(Environment.getExternalStorageDirectory(),fileName+".csv");
-			fileoutputstream=new FileOutputStream(sdfile);
+			fos=new FileOutputStream(sdfile);
 		}
 		else
 		{
@@ -83,7 +90,7 @@ public class FileService{
 		String str;
 		str=sig.toString();
 		try {
-			fileoutputstream.write(str.getBytes());
+			fos.write(str.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,10 +109,39 @@ public class FileService{
     }
 	
 	/**
-	 * 
+	 * Read the reference signature database
+	 * @author Eric Wang
+	 * @param fileName  Ref database file name.
+	 * @return List of reference signatures
+	 * @throws Exception 
 	 */
-	public void readFile()
+	public List<Signature> readFile(String fileName) throws Exception
 	{
+		List<Signature> refSigList=new ArrayList<Signature>();
+		File refDatabase=new File(Environment.getExternalStorageDirectory(),fileName);
+		fr=new FileReader(refDatabase);
+		br=new BufferedReader(fr);
+		String line;
+		String []sArray;
+		while((line=br.readLine())!=null)
+		{
+			sArray=line.split(",");
+			Signature s=new Signature();
+			List<SignatureForm> sf=new ArrayList<SignatureForm>();
+			PointF coordinate=new PointF();
+			coordinate.set(Float.parseFloat(sArray[0]),Float.parseFloat(sArray[1]));
+			s.setCoordinate(coordinate);
+			for(int i=2;i<sArray.length;i=i+2)
+		    {
+				sf.add(new SignatureForm("edurom",sArray[i],Integer.parseInt(sArray[i+1]),0));
+		    }
+			s.setSigList(sf);
+			s.setHashMap();
+			refSigList.add(s);
+		}
+		br.close();
+		fr.close();
+		return refSigList;
 	}
 	
 	/**
@@ -115,7 +151,7 @@ public class FileService{
 	 */
 	public void closeFile() throws Exception
 	{
-		fileoutputstream.close();
+		fos.close();
 	}
 	
 

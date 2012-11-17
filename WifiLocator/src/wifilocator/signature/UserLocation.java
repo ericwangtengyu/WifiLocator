@@ -20,6 +20,7 @@ public class UserLocation {
 	private List<Signature> refSigList;
 	private Signature userSig;
 	private DistanceMetric distanceMetric;
+	private float []dist;
 	
 	/**
 	 * Constructor of UserLocation
@@ -45,7 +46,7 @@ public class UserLocation {
 	{
 		int k=4;
 		List<Signature> k_refSigList=K_nearest(k);
-		Centroid(k_refSigList);
+		WeightedCentroid(k_refSigList);
 		return pLocation;
 	}
 	
@@ -60,8 +61,9 @@ public class UserLocation {
 		List<Signature> k_refSigList=new ArrayList<Signature>(k);
 		int n=refSigList.size();
 		int []index=new int[n];
-		int []dist=new int[n];
-		int temp,tempIndex;
+		dist=new float[n];
+		float temp;
+		int tempIndex;
 		for(int i=0;i<n;i++)
 		{
 			index[i]=i;
@@ -93,22 +95,24 @@ public class UserLocation {
 	}
 	
 	/**
-	 * Calculate the centroid of a List of reference Signatures
+	 * Calculate the Weighted centroid of a List of reference Signatures
 	 * @author Eric Wang
 	 * @param refSigList a list of reference Signatures
 	 */
-	public void Centroid(List<Signature> refSigList)
+	public void WeightedCentroid(List<Signature> refSigList)
 	{
 		float sumX=0;
 		float sumY=0;
+		float denorm=0;
 		//DO I need to transform it to int?
 		int size=refSigList.size();
 		for(int i=0;i<size;i++)
 		{
-			sumX+=refSigList.get(i).getCoordinate().x;
-			sumY+=refSigList.get(i).getCoordinate().y;
+			sumX+=refSigList.get(i).getCoordinate().x*(1/dist[i]);
+			sumY+=refSigList.get(i).getCoordinate().y*(1/dist[i]);
+			denorm+=1/dist[i];
 		}
-		pLocation.set(sumX/size, sumY/size);
+		pLocation.set(sumX/denorm, sumY/denorm);
 		
 	}
 

@@ -27,9 +27,15 @@ public class LocationDraw {
 	{
 		this.setMap(map);
 		canvas=new Canvas(map);
+	}
+	
+	public void draw(int x,int y)
+	{
+		canvas.save();
 		Paint paint = new Paint();  
         paint.setColor(Color.RED);
         canvas.drawCircle(x, y, 10, paint);
+        canvas.restore();
 	}
 	/**
 	 * @return the map

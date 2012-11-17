@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.wifi.WifiManager;
+import wifilocator.gui.LocationDraw;
 import wifilocator.gui.MapLoader;
 import wifilocator.gui.MapTouchListener;
 import wifilocator.service.*;
@@ -66,6 +67,9 @@ public class WifiActivity extends Activity {
 	private WakeLock wakeLock;
 	//GUI part
 	private MapLoader mapLoader;
+	private LocationDraw penDraw;
+	int x_value=0;
+	int y_value=0;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,7 +134,8 @@ public class WifiActivity extends Activity {
         consumer.setName("dataStorage");
         handler=new Handler(){
         	public void handleMessage(Message msg) {
-        		displayAllWifiList();
+        		//displayAllWifiList();
+        		userLocationUpdate();
             }
         };
         btnListener=new MyBtnListener();
@@ -140,6 +145,7 @@ public class WifiActivity extends Activity {
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
         mapLoader=new MapLoader(context,map_image);
         mapLoader.loadMap(R.drawable.seaman);
+        penDraw=new LocationDraw(mapLoader.getBitmap());
 
     }
     
@@ -202,6 +208,18 @@ public class WifiActivity extends Activity {
     }
     
     /**
+     * Update the location of user on the map
+     * @author Eric Wang
+     */
+    private void userLocationUpdate()
+    {
+    	penDraw.draw(x_value,y_value);
+    	map_image.setImageBitmap(mapLoader.getBitmap());
+    	x_value=x_value+20;
+    	y_value=y_value+20;
+    }
+    
+    /**
      * User defined class which implements the OnClickListerer interface.
      * Listener for button click event.
      * @author Eric Wang
@@ -214,19 +232,18 @@ public class WifiActivity extends Activity {
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
 	        	   //context.registerReceiver(wifiStateReceiver, filter);
-	             try {
-	   			   fileService.createFileOnSD(roomnum_text.getText().toString());
-	   		        } catch (Exception e) {
-	   			   // TODO Auto-generated catch block
-	   			   e.printStackTrace();
-	   		       }
-	        	   //wifiService.startScan();
-        		   wifiScanTask=new WifiScanTask(wifiService,eventQueue,memoryQueue);
-        		   timer.scheduleAtFixedRate(wifiScanTask, 0, 1000);
+//	             try {
+//	   			   fileService.createFileOnSD(roomnum_text.getText().toString());
+//	   		        } catch (Exception e) {
+//	   			   // TODO Auto-generated catch block
+//	   			   e.printStackTrace();
+//	   		       }
+//        		   wifiScanTask=new WifiScanTask(wifiService,eventQueue,memoryQueue);
+//        		   timer.scheduleAtFixedRate(wifiScanTask, 0, 1000);
         		   uiUpdateTask=new UIUpdateTask(handler);
         		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 1000);
-	        	   if(!consumer.isAlive())
-	        	   consumer.start();
+//	        	   if(!consumer.isAlive())
+//	        	   consumer.start();
 	        	   displayAllWifiList();
 	        	   btn_scan.setEnabled(false);
 	               break;
