@@ -22,6 +22,7 @@ public class UserLocation {
 	private DistanceMetric distanceMetric;
 	private float []dist;
 	
+	
 	/**
 	 * Constructor of UserLocation
 	 * @author Eric Wang
@@ -31,12 +32,19 @@ public class UserLocation {
 	public UserLocation(List<Signature> refSigList,Signature userSig)
 	{
 		this.setRefSigList(refSigList);
-		this.setUserSigSignature(userSig);
+		this.setUserSignature(userSig);
 		pLocation=new PointF();
 		//missing wifi hotspots is replaced with -100
 		distanceMetric=new DistanceMetric(-100);
 	}
 	
+	public UserLocation()
+	{
+		refSigList=new ArrayList<Signature>();
+		userSig=new Signature();
+		pLocation=new PointF();
+		distanceMetric=new DistanceMetric(-100);
+	}
 	/**
 	 * Calculate the location of user
 	 * @author Eric Wang
@@ -107,10 +115,18 @@ public class UserLocation {
 		//DO I need to transform it to int?
 		int size=refSigList.size();
 		for(int i=0;i<size;i++)
-		{
-			sumX+=refSigList.get(i).getCoordinate().x*(1/dist[i]);
-			sumY+=refSigList.get(i).getCoordinate().y*(1/dist[i]);
-			denorm+=1/dist[i];
+		{   
+			if(dist[i]!=0)
+			{
+				sumX+=refSigList.get(i).getCoordinate().x*(1/dist[i]);
+				sumY+=refSigList.get(i).getCoordinate().y*(1/dist[i]);
+				denorm+=1/dist[i];
+			}
+			else
+			{
+				pLocation.set(refSigList.get(i).getCoordinate());
+				return;
+			}
 		}
 		pLocation.set(sumX/denorm, sumY/denorm);
 		
@@ -126,7 +142,7 @@ public class UserLocation {
 	/**
 	 * @param userSig the userSig to set
 	 */
-	public void setUserSigSignature(Signature userSig) {
+	public void setUserSignature(Signature userSig) {
 		this.userSig = userSig;
 	}
 

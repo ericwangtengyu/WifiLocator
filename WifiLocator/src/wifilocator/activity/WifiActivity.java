@@ -3,6 +3,7 @@ package wifilocator.activity;
 import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,9 @@ import android.os.PowerManager.WakeLock;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
@@ -26,7 +30,7 @@ import android.widget.Toast;
 import android.net.wifi.WifiManager;
 import wifilocator.gui.LocationDraw;
 import wifilocator.gui.MapLoader;
-import wifilocator.gui.MapTouchListener;
+
 import wifilocator.service.*;
 import wifilocator.signature.*;
 import wifilocator.thread.*;
@@ -213,6 +217,8 @@ public class WifiActivity extends Activity {
      */
     private void userLocationUpdate()
     {
+    	mapLoader.setBitmap(R.drawable.seaman);
+    	penDraw.changeMap((mapLoader.getBitmap()));
     	penDraw.draw(x_value,y_value);
     	map_image.setImageBitmap(mapLoader.getBitmap());
     	x_value=x_value+20;
@@ -231,17 +237,8 @@ public class WifiActivity extends Activity {
             // TODO Auto-generated method stub  
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
-	        	   //context.registerReceiver(wifiStateReceiver, filter);
-//	             try {
-//	   			   fileService.createFileOnSD(roomnum_text.getText().toString());
-//	   		        } catch (Exception e) {
-//	   			   // TODO Auto-generated catch block
-//	   			   e.printStackTrace();
-//	   		       }
-//        		   wifiScanTask=new WifiScanTask(wifiService,eventQueue,memoryQueue);
-//        		   timer.scheduleAtFixedRate(wifiScanTask, 0, 1000);
         		   uiUpdateTask=new UIUpdateTask(handler);
-        		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 1000);
+        		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 2000);
 //	        	   if(!consumer.isAlive())
 //	        	   consumer.start();
 	        	   displayAllWifiList();

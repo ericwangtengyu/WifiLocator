@@ -14,18 +14,14 @@ import android.graphics.Paint;
  */
 public class LocationDraw {
 
-	private Bitmap map;
 	private Canvas canvas;
-	private int x;
-	private int y;
 	/**
 	 * Constructor fuction
 	 * @param map  here map is served as our canvas
 	 * @author Eric Wang
 	 */
 	public LocationDraw(Bitmap map)
-	{
-		this.setMap(map);
+	{;
 		canvas=new Canvas(map);
 	}
 	
@@ -37,16 +33,19 @@ public class LocationDraw {
         canvas.drawCircle(x, y, 10, paint);
         canvas.restore();
 	}
-	/**
-	 * @return the map
-	 */
-	public Bitmap getMap() {
-		return map;
+	
+	public void changeMap(Bitmap map)
+	{
+		canvas.setBitmap(map);
 	}
-	/**
-	 * @param map the map to set
-	 */
-	public void setMap(Bitmap map) {
-		this.map = map;
+	
+	public void setCanvas(Canvas canvas)
+	{
+		this.canvas=canvas;
+	}
+	
+	public Canvas getCanvas()
+	{
+		return canvas;
 	}
 }

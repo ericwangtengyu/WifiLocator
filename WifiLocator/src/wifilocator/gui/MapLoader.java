@@ -40,12 +40,8 @@ public class MapLoader {
 	{
 		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		mapView.setImageBitmap(map);
-		mapTouchListener=new MapTouchListener(mapView,map);
+		mapTouchListener=new MapTouchListener(mapView);
 		mapView.setOnTouchListener(mapTouchListener);
-//		Canvas canvas=new Canvas(map);
-//		Paint paint = new Paint();  
-//        paint.setColor(Color.RED);
-//        canvas.drawCircle(100, 100, 10, paint);
 	}
 
 	/**
@@ -84,6 +80,11 @@ public class MapLoader {
 	public Bitmap getBitmap()
 	{
 		return map;
+	}
+	
+	public void setBitmap(int id)
+	{
+		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 	}
 	
 }

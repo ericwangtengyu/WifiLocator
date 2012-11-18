@@ -3,10 +3,8 @@
  */
 package wifilocator.gui;
 
-import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.util.DisplayMetrics;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,16 +21,13 @@ public class MapTouchListener implements OnTouchListener{
 	private static int NONE=0;
 	private static int DRAG=1;
 	private static int ZOOM=2;
-	private static final float MAX_SCALE = 4f;
 	private int mode;
-	private DisplayMetrics dm;
 	private Matrix currentMatrix;
 	private Matrix savedMatrix;
 	private PointF prevP;
 	private PointF midP;
 	private float dist;
 	private ImageView map_image;
-	private Bitmap map;
 	
 	/**
 	 * Constructor function
@@ -40,16 +35,14 @@ public class MapTouchListener implements OnTouchListener{
 	 * @param map_image
 	 * @param map
 	 */
-	public MapTouchListener(ImageView map_image,Bitmap map)
+	public MapTouchListener(ImageView map_image)
 	{
 		currentMatrix=new Matrix();
 		savedMatrix=new Matrix();
 		prevP=new PointF();
 		midP=new PointF();
-		dm=new DisplayMetrics();
 		mode=NONE;
 		this.map_image=map_image;
-		this.map=map;
 		map_image.setImageMatrix(currentMatrix);
 	}
 	
@@ -130,13 +123,13 @@ public class MapTouchListener implements OnTouchListener{
 	/**
 	 * 
 	 */
-	private void minZoom() {
-        float minScaleR = Math.min(
-                (float) map_image.getWidth() / (float) map.getWidth(),
-                (float) map_image.getHeight() / (float) map.getHeight());
-        if (minScaleR < 1.0) {
-            currentMatrix.postScale(minScaleR, minScaleR);
-        }
-    }
+//	private void minZoom() {
+//        float minScaleR = Math.min(
+//                (float) map_image.getWidth() / (float) map.getWidth(),
+//                (float) map_image.getHeight() / (float) map.getHeight());
+//        if (minScaleR < 1.0) {
+//            currentMatrix.postScale(minScaleR, minScaleR);
+//        }
+//    }
 	
 }
