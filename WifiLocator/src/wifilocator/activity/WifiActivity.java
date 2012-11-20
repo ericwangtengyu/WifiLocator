@@ -54,7 +54,7 @@ public class WifiActivity extends Activity {
     private IntentFilter filter;
     
     private Timer timer;
-    private LocationEstimateTask locationTask;
+    private LocationEstimateTask locatEstiTask;
     private UIUpdateTask_Map uiUpdate;
     
     private MyBtnListener btnListener;
@@ -87,17 +87,10 @@ public class WifiActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(locationTask!=null)
-			locationTask.cancel();
+		if(locatEstiTask!=null)
+			locatEstiTask.cancel();
 		timer.cancel();
 		wifiService.closeWifi();
-		try {
-			//this.unregisterReceiver(wifiStateReceiver);
-			fileService.closeFile();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block;
-			e.printStackTrace();
-		}
 		Toast.makeText(this, "OnDestroy", Toast.LENGTH_SHORT).show();
 	}
     
@@ -123,7 +116,7 @@ public class WifiActivity extends Activity {
 		}
         uiUpdate=new UIUpdateTask_Map(eventQueue,memoryQueue,handler);
         consumer=new Thread(uiUpdate);
-        consumer.setName("dataStorage");
+        consumer.setName("UI Update");
         handler=new Handler(){
         	public void handleMessage(Message msg) {
         		//displayAllWifiList();
@@ -207,12 +200,13 @@ public class WifiActivity extends Activity {
     {
     	mapLoader.setBitmap(R.drawable.jessup);
     	penDraw.changeMap((mapLoader.getBitmap()));
-//    	float x=((PointF)msg.obj).x;
-//    	float y=((PointF)msg.obj).y;
-    	penDraw.draw(x_value,y_value);
+    	float x=((PointF)msg.obj).x;
+    	float y=((PointF)msg.obj).y;
+    	//penDraw.draw(x_value,y_value);
+    	penDraw.draw(x, y);
     	map_image.setImageBitmap(mapLoader.getBitmap());
-    	x_value=x_value+20.5f;
-    	y_value=y_value+20.5f;
+//    	x_value=x_value+20.5f;
+//    	y_value=y_value+20.5f;
     }
     
     /**
@@ -227,32 +221,16 @@ public class WifiActivity extends Activity {
             // TODO Auto-generated method stub  
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
-        		   //timer.scheduleAtFixedRate(uiUpdateTask, 0, 2000);
-//	        	   if(!consumer.isAlive())
-//	        	   consumer.start();
-        		   try {
-					List<Signature> ref=fileService.readFile("wifiData.csv");
-					
-					Toast.makeText(context, ref.size()+"", Toast.LENGTH_SHORT).show();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
-				}
-	        	   displayAllWifiList();
+	        	   locatEstiTask =new LocationEstimateTask(wifiService,fileService,eventQueue,memoryQueue);
+        		   timer.scheduleAtFixedRate(locatEstiTask, 0, 1000);
+	        	   if(!consumer.isAlive())
+	        	   consumer.start();
 	        	   btn_scan.setEnabled(false);
 	               break;
 	           case R.id.stopScan:
-	        	   //context.unregisterReceiver(wifiStateReceiver);
-//	        	   if(uiUpdateTask!=null)
-//	        		   uiUpdateTask.cancel();
+	        	   if(locatEstiTask!=null)
+	        		   locatEstiTask.cancel();
 	        	   btn_scan.setEnabled(true);
-	        	   wifilist_text.setText("");
-	        	   try {
-	       			fileService.closeFile();
-	       		    } catch (Exception e) {
-	       			  e.printStackTrace();
-	       		    }
 	        	   break;
 	           case R.id.openWifi: 
 	        	   wifiService.openWifi();

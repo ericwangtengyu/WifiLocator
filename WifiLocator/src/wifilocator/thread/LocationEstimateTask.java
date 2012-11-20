@@ -31,7 +31,7 @@ public class LocationEstimateTask extends TimerTask{
 	private BlockingQueue<PointF> eventQueue;
 	private BlockingQueue<PointF> memoryQueue;
 	
-	public LocationEstimateTask(WifiService wifiService,FileService fileService)
+	public LocationEstimateTask(WifiService wifiService,FileService fileService,BlockingQueue<PointF> eventQueue,BlockingQueue<PointF> memoryQueue)
 	{
 		this.wifiService=wifiService;
 		this.userLocation=new UserLocation();
@@ -44,17 +44,8 @@ public class LocationEstimateTask extends TimerTask{
 			e.printStackTrace();
 		}
 		userLocation.setRefSigList(refSigList);
-		eventQueue=new ArrayBlockingQueue<PointF>(10);
-		memoryQueue=new ArrayBlockingQueue<PointF>(10);
-        try {
-	    		for(int i=0;i<10;i++)
-	    		{
-	    			memoryQueue.put(new PointF());
-	    		}
-		} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		}
+		this.eventQueue=eventQueue;
+		this.memoryQueue=memoryQueue;
 	}
 	@Override
 	public void run() {
