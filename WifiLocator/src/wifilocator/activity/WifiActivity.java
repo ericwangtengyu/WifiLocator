@@ -114,15 +114,15 @@ public class WifiActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
-        uiUpdate=new UIUpdateTask_Map(eventQueue,memoryQueue,handler);
-        consumer=new Thread(uiUpdate);
-        consumer.setName("UI Update");
         handler=new Handler(){
         	public void handleMessage(Message msg) {
         		//displayAllWifiList();
         		userLocationUpdate(msg);
             }
         };
+        uiUpdate=new UIUpdateTask_Map(eventQueue,memoryQueue,handler);
+        consumer=new Thread(uiUpdate);
+        consumer.setName("UI Update");
         btnListener=new MyBtnListener();
         filter=new IntentFilter();
         timer=new Timer();

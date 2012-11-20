@@ -35,7 +35,7 @@ public class UIUpdateTask_Map implements Runnable {
 			while(true)
 			{
 				PointF p=eventQueue.take();
-				handler.obtainMessage(1).sendToTarget();
+				handler.obtainMessage(1,p).sendToTarget();
 				memoryQueue.put(p);
 			}
 		} catch (InterruptedException e) {

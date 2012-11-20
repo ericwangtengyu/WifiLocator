@@ -6,7 +6,6 @@ package wifilocator.thread;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import android.graphics.PointF;
