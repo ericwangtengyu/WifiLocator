@@ -13,20 +13,14 @@ import android.os.PowerManager.WakeLock;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.wifi.WifiManager;
@@ -45,28 +39,25 @@ public class WifiActivity extends Activity {
     private Button btn_stop_scan;
     private TextView wifilist_text;
     private ProgressBar scanning_bar;
-    private EditText roomnum_text;
     private ImageView map_image;
     
     
     private WifiService wifiService;
     private FileService fileService;
-    private DataStorage dataStorage;
     
     private Thread consumer;
     private Context context;
     private Handler handler;
-    
+	private BlockingQueue<PointF> eventQueue;
+	private BlockingQueue<PointF> memoryQueue;
     
     private IntentFilter filter;
     
     private Timer timer;
-    private WifiScanTask wifiScanTask;
-    private UIUpdateTask_Data uiUpdateTask;
+    private LocationEstimateTask locationTask;
+    private UIUpdateTask_Map uiUpdate;
     
     private MyBtnListener btnListener;
-    private BlockingQueue<Signature> eventQueue;
-    private BlockingQueue<Signature> memoryQueue;
     
     private PowerManager powerManager;
 	private WakeLock wakeLock;
@@ -96,10 +87,8 @@ public class WifiActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		if(wifiScanTask!=null)
-     	   wifiScanTask.cancel();
-		if(uiUpdateTask!=null)
-		   uiUpdateTask.cancel();
+		if(locationTask!=null)
+			locationTask.cancel();
 		timer.cancel();
 		wifiService.closeWifi();
 		try {
@@ -121,20 +110,19 @@ public class WifiActivity extends Activity {
     	context=this;
         wifiService=new WifiService(this);
         fileService=new FileService(this);
-        eventQueue=new ArrayBlockingQueue<Signature>(10);
-        memoryQueue=new ArrayBlockingQueue<Signature>(10);
-        for(int i=0;i<10;i++)
-        {
-        	Signature s=new Signature();
-        	try {
-				memoryQueue.put(s);
-			} catch (InterruptedException e) {
+        eventQueue=new ArrayBlockingQueue<PointF>(10);
+		memoryQueue=new ArrayBlockingQueue<PointF>(10);
+        try {
+    		for(int i=0;i<10;i++)
+    		{
+    			memoryQueue.put(new PointF());
+    		}
+		} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-        }
-        dataStorage=new DataStorage(fileService,eventQueue,memoryQueue);     
-        consumer=new Thread(dataStorage);
+		}
+        uiUpdate=new UIUpdateTask_Map(eventQueue,memoryQueue,handler);
+        consumer=new Thread(uiUpdate);
         consumer.setName("dataStorage");
         handler=new Handler(){
         	public void handleMessage(Message msg) {
@@ -239,8 +227,7 @@ public class WifiActivity extends Activity {
             // TODO Auto-generated method stub  
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
-        		   uiUpdateTask=new UIUpdateTask_Data(handler);
-        		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 2000);
+        		   //timer.scheduleAtFixedRate(uiUpdateTask, 0, 2000);
 //	        	   if(!consumer.isAlive())
 //	        	   consumer.start();
         		   try {
@@ -257,10 +244,8 @@ public class WifiActivity extends Activity {
 	               break;
 	           case R.id.stopScan:
 	        	   //context.unregisterReceiver(wifiStateReceiver);
-	        	   if(wifiScanTask!=null)
-	        	   wifiScanTask.cancel();
-	        	   if(uiUpdateTask!=null)
-	        		   uiUpdateTask.cancel();
+//	        	   if(uiUpdateTask!=null)
+//	        		   uiUpdateTask.cancel();
 	        	   btn_scan.setEnabled(true);
 	        	   wifilist_text.setText("");
 	        	   try {
