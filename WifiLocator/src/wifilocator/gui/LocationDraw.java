@@ -25,7 +25,7 @@ public class LocationDraw {
 		canvas=new Canvas(map);
 	}
 	
-	public void draw(int x,int y)
+	public void draw(float x,float y)
 	{
 		canvas.save();
 		Paint paint = new Paint();  

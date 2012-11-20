@@ -11,11 +11,11 @@ import android.os.Handler;
  * @author Eric Wang
  * @version 0
  */
-public class UIUpdateTask extends TimerTask {
+public class UIUpdateTask_Data extends TimerTask {
 
     private Handler handler;
     
-    public UIUpdateTask(Handler handler)
+    public UIUpdateTask_Data(Handler handler)
     {
     	this.setHandler(handler);
     }

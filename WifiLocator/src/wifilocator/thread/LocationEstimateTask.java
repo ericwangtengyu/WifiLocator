@@ -6,6 +6,8 @@ package wifilocator.thread;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import android.graphics.PointF;
 import android.net.wifi.ScanResult;
@@ -19,23 +21,22 @@ import wifilocator.signature.UserLocation;
  * @author Eric
  *
  */
-public class LocationUpdateTask extends TimerTask{
+public class LocationEstimateTask extends TimerTask{
 
 	/* (non-Javadoc)
 	 * @see java.util.TimerTask#run()
 	 */
 	private UserLocation userLocation;
 	private WifiService wifiService;
-	private FileService fileService;
-	private List<Signature> refSigList;
+	private BlockingQueue<PointF> eventQueue;
+	private BlockingQueue<PointF> memoryQueue;
 	
-	public LocationUpdateTask(WifiService wifiService,FileService fileService)
+	public LocationEstimateTask(WifiService wifiService,FileService fileService)
 	{
 		this.wifiService=wifiService;
-		this.fileService=fileService;
 		this.userLocation=new UserLocation();
 		List<Signature> refSigList=new ArrayList<Signature>();
-		String fileName="";
+		String fileName="wifiData.csv";
 		try {
 			refSigList=fileService.readFile(fileName);
 		} catch (Exception e) {
@@ -43,6 +44,17 @@ public class LocationUpdateTask extends TimerTask{
 			e.printStackTrace();
 		}
 		userLocation.setRefSigList(refSigList);
+		eventQueue=new ArrayBlockingQueue<PointF>(10);
+		memoryQueue=new ArrayBlockingQueue<PointF>(10);
+        try {
+	    		for(int i=0;i<10;i++)
+	    		{
+	    			memoryQueue.put(new PointF());
+	    		}
+		} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
 	}
 	@Override
 	public void run() {
@@ -51,9 +63,15 @@ public class LocationUpdateTask extends TimerTask{
 		List<ScanResult> wifiList=wifiService.getWifiList();
 		Signature userSignature=new Signature(wifiList,System.currentTimeMillis());
 		userLocation.setUserSignature(userSignature);
-		PointF userPoint=userLocation.getLocation();
-		
-		
+		PointF userPoint;
+		try {
+			userPoint = memoryQueue.take();
+			userPoint.set(userLocation.getLocation());
+			eventQueue.put(userPoint);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * @return the userLocation
@@ -68,5 +86,13 @@ public class LocationUpdateTask extends TimerTask{
 		this.userLocation = userLocation;
 	}
 
-
+	public BlockingQueue<PointF> getMemoryQueue()
+	{
+		return memoryQueue;
+	}
+	
+	public BlockingQueue<PointF> getEventQueue()
+	{
+		return eventQueue;
+	}
 }

@@ -1,5 +1,6 @@
 package wifilocator.activity;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -15,6 +16,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
@@ -56,12 +58,11 @@ public class WifiActivity extends Activity {
     private Handler handler;
     
     
-    private WifiStateReceiver wifiStateReceiver;
     private IntentFilter filter;
     
     private Timer timer;
     private WifiScanTask wifiScanTask;
-    private UIUpdateTask uiUpdateTask;
+    private UIUpdateTask_Data uiUpdateTask;
     
     private MyBtnListener btnListener;
     private BlockingQueue<Signature> eventQueue;
@@ -72,8 +73,8 @@ public class WifiActivity extends Activity {
 	//GUI part
 	private MapLoader mapLoader;
 	private LocationDraw penDraw;
-	int x_value=0;
-	int y_value=0;
+	float x_value=0;
+	float y_value=0;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,14 +133,13 @@ public class WifiActivity extends Activity {
 				e.printStackTrace();
 			}
         }
-        dataStorage=new DataStorage(fileService,eventQueue,memoryQueue);
-        wifiStateReceiver=new WifiStateReceiver(this,wifiService,eventQueue,memoryQueue);     
+        dataStorage=new DataStorage(fileService,eventQueue,memoryQueue);     
         consumer=new Thread(dataStorage);
         consumer.setName("dataStorage");
         handler=new Handler(){
         	public void handleMessage(Message msg) {
         		//displayAllWifiList();
-        		userLocationUpdate();
+        		userLocationUpdate(msg);
             }
         };
         btnListener=new MyBtnListener();
@@ -148,7 +148,7 @@ public class WifiActivity extends Activity {
         powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
         mapLoader=new MapLoader(context,map_image);
-        mapLoader.loadMap(R.drawable.seaman);
+        mapLoader.loadMap(R.drawable.jessup);
         penDraw=new LocationDraw(mapLoader.getBitmap());
 
     }
@@ -215,14 +215,16 @@ public class WifiActivity extends Activity {
      * Update the location of user on the map
      * @author Eric Wang
      */
-    private void userLocationUpdate()
+    private void userLocationUpdate(Message msg)
     {
-    	mapLoader.setBitmap(R.drawable.seaman);
+    	mapLoader.setBitmap(R.drawable.jessup);
     	penDraw.changeMap((mapLoader.getBitmap()));
+//    	float x=((PointF)msg.obj).x;
+//    	float y=((PointF)msg.obj).y;
     	penDraw.draw(x_value,y_value);
     	map_image.setImageBitmap(mapLoader.getBitmap());
-    	x_value=x_value+20;
-    	y_value=y_value+20;
+    	x_value=x_value+20.5f;
+    	y_value=y_value+20.5f;
     }
     
     /**
@@ -237,10 +239,19 @@ public class WifiActivity extends Activity {
             // TODO Auto-generated method stub  
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
-        		   uiUpdateTask=new UIUpdateTask(handler);
+        		   uiUpdateTask=new UIUpdateTask_Data(handler);
         		   timer.scheduleAtFixedRate(uiUpdateTask, 0, 2000);
 //	        	   if(!consumer.isAlive())
 //	        	   consumer.start();
+        		   try {
+					List<Signature> ref=fileService.readFile("wifiData.csv");
+					
+					Toast.makeText(context, ref.size()+"", Toast.LENGTH_SHORT).show();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show();
+				}
 	        	   displayAllWifiList();
 	        	   btn_scan.setEnabled(false);
 	               break;
