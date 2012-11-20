@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.graphics.PointF;
 import android.net.wifi.ScanResult;
 
 /**
@@ -21,6 +22,9 @@ public class Signature {
 	// The map collection is used to help us get the intersection between Signature
 	private Map<String,Integer> bssId_level;
 	private long timeStamp;
+	
+	private PointF coordinate;//not implemented yet, need read file
+	
 	
 	public Signature(List<ScanResult> wifiList, long timeStamp)
 	{
@@ -110,12 +114,26 @@ public class Signature {
 	{
 		StringBuilder str=new StringBuilder();
 		str.append(timeStamp).append(",");
-		for(int i=1;i<sigList.size();i++)
+		for(int i=0;i<sigList.size();i++)
 		{
 			str.append(sigList.get(i).toString());
 		}
 		str.append("\r\n");
 		return str.toString();
+	}
+
+	/**
+	 * @return the coordinate
+	 */
+	public PointF getCoordinate() {
+		return coordinate;
+	}
+
+	/**
+	 * @param coordinate the coordinate to set
+	 */
+	public void setCoordinate(PointF coordinate) {
+		this.coordinate = coordinate;
 	}
 	
 }
