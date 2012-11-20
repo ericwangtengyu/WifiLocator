@@ -40,7 +40,7 @@ public class MapLoader {
 	{
 		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		mapView.setImageBitmap(map);
-		mapTouchListener=new MapTouchListener(mapView);
+		mapTouchListener=new MapTouchListener(mapView,map);
 		mapView.setOnTouchListener(mapTouchListener);
 	}
 

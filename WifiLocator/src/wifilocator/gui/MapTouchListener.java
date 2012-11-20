@@ -3,7 +3,11 @@
  */
 package wifilocator.gui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.FloatMath;
 import android.view.MotionEvent;
@@ -28,6 +32,9 @@ public class MapTouchListener implements OnTouchListener{
 	private PointF midP;
 	private float dist;
 	private ImageView map_image;
+	//test for GUI
+	private Canvas canvas;
+	private Bitmap bitmap;
 	
 	/**
 	 * Constructor function
@@ -35,7 +42,7 @@ public class MapTouchListener implements OnTouchListener{
 	 * @param map_image
 	 * @param map
 	 */
-	public MapTouchListener(ImageView map_image)
+	public MapTouchListener(ImageView map_image,Bitmap bitmap)
 	{
 		currentMatrix=new Matrix();
 		savedMatrix=new Matrix();
@@ -44,6 +51,10 @@ public class MapTouchListener implements OnTouchListener{
 		mode=NONE;
 		this.map_image=map_image;
 		map_image.setImageMatrix(currentMatrix);
+		//test for GUI
+		this.bitmap=bitmap;
+		canvas=new Canvas(this.bitmap);
+		//map_image.draw(canvas);
 	}
 	
 	/**

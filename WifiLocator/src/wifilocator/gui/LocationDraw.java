@@ -21,7 +21,7 @@ public class LocationDraw {
 	 * @author Eric Wang
 	 */
 	public LocationDraw(Bitmap map)
-	{;
+	{
 		canvas=new Canvas(map);
 	}
 	

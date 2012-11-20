@@ -10,10 +10,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
+//import android.graphics.Color;
 import android.graphics.PointF;
+//import android.graphics.PorterDuff;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
@@ -196,13 +199,15 @@ public class WifiActivity extends Activity {
      * Update the location of user on the map
      * @author Eric Wang
      */
-    private void userLocationUpdate(Message msg)
+    @SuppressLint("NewApi")
+	private void userLocationUpdate(Message msg)
     {
     	mapLoader.setBitmap(R.drawable.jessup);
     	penDraw.changeMap((mapLoader.getBitmap()));
     	float x=((PointF)msg.obj).x;
     	float y=((PointF)msg.obj).y;
-    	//penDraw.draw(x_value,y_value);
+//    	penDraw.draw(x_value,y_value);
+//    	penDraw.getCanvas().drawColor(Color.WHITE,PorterDuff.Mode.CLEAR);
     	penDraw.draw(x, y);
     	map_image.setImageBitmap(mapLoader.getBitmap());
 //    	x_value=x_value+20.5f;
