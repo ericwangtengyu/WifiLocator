@@ -38,7 +38,9 @@ public class MapLoader {
 	 */
 	public void loadMap(int id)
 	{
-		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		//map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		map=tempmap.createScaledBitmap(tempmap, 1149, 656, false);
 		mapView.setImageBitmap(map);
 		mapTouchListener=new MapTouchListener(mapView,map);
 		mapView.setOnTouchListener(mapTouchListener);
@@ -84,7 +86,9 @@ public class MapLoader {
 	
 	public void setBitmap(int id)
 	{
-		map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		//map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
+		map=tempmap.createScaledBitmap(tempmap, 1149, 656, false);
 	}
 	
 }

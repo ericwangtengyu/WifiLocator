@@ -63,7 +63,10 @@ public class Signature {
 	 * @param sigList the sigList to set
 	 */
 	public void setSigList(List<SignatureForm> sigList) {
-		this.sigList = sigList;
+		for(int i=0;i<sigList.size();i++)
+		{
+			this.sigList.add(sigList.get(i));
+		}
 	}
 	
 	/**

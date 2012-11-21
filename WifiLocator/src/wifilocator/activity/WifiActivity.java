@@ -152,6 +152,7 @@ public class WifiActivity extends Activity {
 		wakeLock.release();
 	}
 
+	
 	/**
 	 * Initiate the widgets
 	 * @author Eric Wang
@@ -199,11 +200,11 @@ public class WifiActivity extends Activity {
      * Update the location of user on the map
      * @author Eric Wang
      */
-    @SuppressLint("NewApi")
 	private void userLocationUpdate(Message msg)
     {
     	mapLoader.setBitmap(R.drawable.jessup);
     	penDraw.changeMap((mapLoader.getBitmap()));
+    	//Toast.makeText(context, mapLoader.getBitmap().getHeight()+"",Toast.LENGTH_SHORT).show();
     	float x=((PointF)msg.obj).x;
     	float y=((PointF)msg.obj).y;
 //    	penDraw.draw(x_value,y_value);

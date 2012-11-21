@@ -3,6 +3,7 @@
  */
 package wifilocator.signature;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -36,12 +37,13 @@ public class DistanceMetric {
 	public int getUniDistance(Signature ref, Signature user)
 	{
 		int distance=0;
+		ref.setHashMap();
+		user.setHashMap();
 		Map<String,Integer> m1=ref.getHashMap();
 		Map<String,Integer> m2=user.getHashMap();
-		Set<String> s1=m1.keySet();
-		Set<String> s2=m2.keySet();
+		Set<String> s1=new HashSet<String>(m1.keySet());
+		Set<String> s2=new HashSet<String>(m2.keySet());
 		s1.retainAll(s2);
-		s2.removeAll(s1);
 		Iterator<String> it=s1.iterator();
 		String tmp;
 		//Intersection of ref signature and user signature
@@ -51,6 +53,7 @@ public class DistanceMetric {
 			distance+=Math.abs(m1.get(tmp)-m2.get(tmp));
 		}
 		//Set of User signature- Ref signature
+		s2.removeAll(s1);
 		it=s2.iterator();
 		while(it.hasNext())
 		{
@@ -78,8 +81,6 @@ public class DistanceMetric {
 		Set<String> s2=m2.keySet();
 		Set<String> s3=m1.keySet();
 		s1.retainAll(s2);
-		s2.removeAll(s1);
-		s3.removeAll(s1);
 
 		//Intersection of ref signature and user signature
 		it=s1.iterator();
@@ -89,6 +90,7 @@ public class DistanceMetric {
 			distance+=Math.abs(m1.get(tmp)-m2.get(tmp));
 		}
 		//Set of User signature- Ref signature
+		s2.removeAll(s1);
 		it=s2.iterator();
 		while(it.hasNext())
 		{
@@ -96,6 +98,7 @@ public class DistanceMetric {
 			distance+=Math.abs(m2.get(tmp)-lowerBound);
 		}
 		//Set of Ref signature- user signature
+		s3.removeAll(s1);
 		it=s3.iterator();
 		while(it.hasNext())
 		{

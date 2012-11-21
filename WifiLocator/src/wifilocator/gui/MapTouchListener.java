@@ -33,8 +33,6 @@ public class MapTouchListener implements OnTouchListener{
 	private float dist;
 	private ImageView map_image;
 	//test for GUI
-	private Canvas canvas;
-	private Bitmap bitmap;
 	
 	/**
 	 * Constructor function
@@ -52,8 +50,6 @@ public class MapTouchListener implements OnTouchListener{
 		this.map_image=map_image;
 		map_image.setImageMatrix(currentMatrix);
 		//test for GUI
-		this.bitmap=bitmap;
-		canvas=new Canvas(this.bitmap);
 		//map_image.draw(canvas);
 	}
 	
