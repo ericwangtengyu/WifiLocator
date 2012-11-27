@@ -9,8 +9,9 @@ import wifilocator.service.FileService;
 import wifilocator.signature.*;
 
 /**
+ * A Thread to store the Wifi data into a CSV file.(used in Data Collection)
  * @author Eric Wang
- *
+ * @version 0
  */
 public class DataStorage implements Runnable {
 	private FileService fileService;

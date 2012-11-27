@@ -18,7 +18,8 @@ import wifilocator.signature.UserLocation;
 
 /**
  * @author Eric
- *
+ * The timerTask that esitemate the User Location.
+ * @version 0
  */
 public class LocationEstimateTask extends TimerTask{
 
@@ -30,6 +31,14 @@ public class LocationEstimateTask extends TimerTask{
 	private BlockingQueue<PointF> eventQueue;
 	private BlockingQueue<PointF> memoryQueue;
 	
+	/**
+	 * Constructor function of LocationEstimateTask.
+	 * @author Eric Wang
+	 * @param wifiService
+	 * @param fileService
+	 * @param eventQueue
+	 * @param memoryQueue
+	 */
 	public LocationEstimateTask(WifiService wifiService,FileService fileService,BlockingQueue<PointF> eventQueue,BlockingQueue<PointF> memoryQueue)
 	{
 		this.wifiService=wifiService;
@@ -46,6 +55,7 @@ public class LocationEstimateTask extends TimerTask{
 		this.eventQueue=eventQueue;
 		this.memoryQueue=memoryQueue;
 	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

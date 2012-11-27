@@ -112,6 +112,7 @@ public class Signature {
 	/**
 	 * Convert a Signature to String.
 	 * @author Eric Wang
+	 * @return String form of a Signature.
 	 */
 	public String toString()
 	{

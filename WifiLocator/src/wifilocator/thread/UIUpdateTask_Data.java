@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 import android.os.Handler;
 /**
- * Scheduled task of UI updates
+ * Scheduled task of UI updates used in Data Collection
  * @author Eric Wang
  * @version 0
  */

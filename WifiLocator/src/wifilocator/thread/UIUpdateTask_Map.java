@@ -10,8 +10,9 @@ import android.os.Handler;
 
 
 /**
+ * A new Thread to do UI updates used in Map View
  * @author Eric
- *
+ * @version 0
  */
 public class UIUpdateTask_Map implements Runnable {
 
@@ -23,12 +24,20 @@ public class UIUpdateTask_Map implements Runnable {
 	private BlockingQueue<PointF> eventQueue;
 	private Handler handler;
 	
+	/**
+	 * Constructor function of UIUpdateTask_Map
+	 * @param eventQueue
+	 * @param memoryQueue
+	 * @param handler
+	 * @author Eric Wang
+	 */
 	public UIUpdateTask_Map(BlockingQueue<PointF> eventQueue,BlockingQueue<PointF> memoryQueue,Handler handler)
 	{
 		this.eventQueue=eventQueue;
 		this.memoryQueue=memoryQueue;
 		this.handler=handler;
 	}
+	
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
