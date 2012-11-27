@@ -76,6 +76,9 @@ public class Signature {
 	 */
 	public void setSigList_s(List<ScanResult> wifiList)
 	{
+		//Because SigList is retrieved from the MemoryQueue, so we need to clear the orginal sigList.
+		if(sigList.size()!=0)
+			sigList.clear();
 		for(int i=0;i<wifiList.size();i++)
 		{
 			SignatureForm tuple=new SignatureForm(wifiList.get(i).SSID,wifiList.get(i).BSSID,wifiList.get(i).level,wifiList.get(i).frequency);
