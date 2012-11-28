@@ -77,9 +77,9 @@ public class DistanceMetric {
 		String tmp;
 		Map<String,Integer> m1=ref.getHashMap();
 		Map<String,Integer> m2=user.getHashMap();
-		Set<String> s1=m1.keySet();
-		Set<String> s2=m2.keySet();
-		Set<String> s3=m1.keySet();
+		Set<String> s1=new HashSet<String>(m1.keySet());
+		Set<String> s2=new HashSet<String>(m2.keySet());
+		Set<String> s3=new HashSet<String>(m1.keySet());
 		s1.retainAll(s2);
 
 		//Intersection of ref signature and user signature

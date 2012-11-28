@@ -43,7 +43,7 @@ public class UserLocation {
 		refSigList=new ArrayList<Signature>();
 		userSig=new Signature();
 		pLocation=new PointF();
-		distanceMetric=new DistanceMetric(-100);
+		distanceMetric=new DistanceMetric(-120);
 	}
 	/**
 	 * Calculate the location of user
@@ -52,7 +52,7 @@ public class UserLocation {
 	 */
 	public PointF getLocation()
 	{
-		int k=4;
+		int k=3;
 		List<Signature> k_refSigList=K_nearest(k);
 		WeightedCentroid(k_refSigList);
 		return pLocation;
@@ -75,7 +75,7 @@ public class UserLocation {
 		for(int i=0;i<n;i++)
 		{
 			index[i]=i;
-			dist[i]=distanceMetric.getUniDistance(refSigList.get(i), userSig);
+			dist[i]=distanceMetric.getBiDistance(refSigList.get(i), userSig);
 		}
 		//Bubble K Sort, No need to sort All.
 		for(int i=0;i<k;i++)

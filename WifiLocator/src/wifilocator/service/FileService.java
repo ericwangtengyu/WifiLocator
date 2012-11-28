@@ -98,7 +98,6 @@ public class FileService{
 	}
 	
 	/**
-	 * @author David Thole
 	 * @return the date we create the csv file
 	 */
 	public String getDateFormat() {
