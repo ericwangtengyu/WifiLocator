@@ -43,7 +43,7 @@ public class UserLocation {
 		refSigList=new ArrayList<Signature>();
 		userSig=new Signature();
 		pLocation=new PointF();
-		distanceMetric=new DistanceMetric(-150);
+		distanceMetric=new DistanceMetric(-110);
 	}
 	/**
 	 * Calculate the location of user
