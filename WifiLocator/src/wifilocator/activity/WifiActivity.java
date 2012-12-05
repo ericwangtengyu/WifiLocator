@@ -133,7 +133,7 @@ public class WifiActivity extends Activity {
         powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
         mapLoader=new MapLoader(context,map_image);
-        mapLoader.loadMap(R.drawable.jessup);
+        mapLoader.loadMap(R.drawable.bigjessup);
         penDraw=new LocationDraw(mapLoader.getBitmap());
 
     }
@@ -204,7 +204,7 @@ public class WifiActivity extends Activity {
      */
 	private void userLocationUpdate(Message msg)
     {
-    	mapLoader.setBitmap(R.drawable.jessup);
+    	mapLoader.setBitmap(R.drawable.bigjessup);
     	penDraw.changeMap((mapLoader.getBitmap()));
     	//Toast.makeText(context, mapLoader.getBitmap().getHeight()+"",Toast.LENGTH_SHORT).show();
     	float x=((PointF)msg.obj).x;

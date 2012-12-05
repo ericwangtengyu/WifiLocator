@@ -128,9 +128,9 @@ public class FileService{
 			Signature s=new Signature();
 			List<SignatureForm> sf=new ArrayList<SignatureForm>();
 			PointF coordinate=new PointF();
-			coordinate.set(Float.parseFloat(sArray[0]),Float.parseFloat(sArray[1]));
+			coordinate.set(Float.parseFloat(sArray[1]),Float.parseFloat(sArray[2]));
 			s.setCoordinate(coordinate);
-			for(int i=2;i<sArray.length;i=i+2)
+			for(int i=3;i<sArray.length;i=i+2)
 		    {
 				sf.add(new SignatureForm("edurom",sArray[i],Integer.parseInt(sArray[i+1]),0));
 		    }

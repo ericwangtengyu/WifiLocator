@@ -40,7 +40,7 @@ public class MapLoader {
 	{
 		//map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
-		map=tempmap.createScaledBitmap(tempmap, 1149, 656, false);
+		map=tempmap.createScaledBitmap(tempmap, 1000, 2045, false);
 		mapView.setImageBitmap(map);
 		mapTouchListener=new MapTouchListener(mapView,map);
 		mapView.setOnTouchListener(mapTouchListener);
@@ -88,7 +88,7 @@ public class MapLoader {
 	{
 		//map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
-		map=tempmap.createScaledBitmap(tempmap, 1149, 656, false);
+		map=tempmap.createScaledBitmap(tempmap, 1000, 2045, false);
 	}
 	
 }
