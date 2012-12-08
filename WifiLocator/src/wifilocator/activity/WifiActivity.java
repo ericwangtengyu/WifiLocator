@@ -14,6 +14,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 //import android.graphics.Color;
 import android.graphics.PointF;
 //import android.graphics.PorterDuff;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import android.net.wifi.WifiManager;
 import wifilocator.gui.LocationDraw;
 import wifilocator.gui.MapLoader;
+import wifilocator.gui.MapTouchListener;
 
 import wifilocator.service.*;
 import wifilocator.signature.*;
@@ -43,7 +46,8 @@ public class WifiActivity extends Activity {
     private TextView wifilist_text;
     private ProgressBar scanning_bar;
     private ImageView map_image;
-    private ImageView ball_image;
+    private ImageView point_image;
+    private Bitmap transparent_pic;
     
     
     private WifiService wifiService;
@@ -132,9 +136,14 @@ public class WifiActivity extends Activity {
         timer=new Timer();
         powerManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock=powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wifi");
-        mapLoader=new MapLoader(context,map_image);
+        mapLoader=new MapLoader(context,map_image,point_image);
         mapLoader.loadMap(R.drawable.bigjessup);
-        penDraw=new LocationDraw(mapLoader.getBitmap());
+        transparent_pic=Bitmap.createBitmap(1000, 2045, Config.ARGB_8888);
+        point_image.setImageBitmap(transparent_pic);
+        MapTouchListener m=new MapTouchListener(point_image,map_image);
+        point_image.setOnTouchListener(m);
+        penDraw=new LocationDraw(transparent_pic);
+        //penDraw=new LocationDraw(mapLoader.getBitmap());
 
     }
     
@@ -168,7 +177,7 @@ public class WifiActivity extends Activity {
     	wifilist_text.setMovementMethod(ScrollingMovementMethod.getInstance());
     	scanning_bar=(ProgressBar)findViewById(R.id.scanning);
     	map_image=(ImageView)findViewById(R.id.mapView);
-    	//ball_image=(ImageView)findViewById(R.id)
+    	point_image=(ImageView)findViewById(R.id.pointView);
     }
     
     /**
@@ -204,15 +213,17 @@ public class WifiActivity extends Activity {
      */
 	private void userLocationUpdate(Message msg)
     {
-    	mapLoader.setBitmap(R.drawable.bigjessup);
-    	penDraw.changeMap((mapLoader.getBitmap()));
+    	//mapLoader.setBitmap(R.drawable.bigjessup);
+    	//penDraw.changeMap((mapLoader.getBitmap()));
     	//Toast.makeText(context, mapLoader.getBitmap().getHeight()+"",Toast.LENGTH_SHORT).show();
     	float x=((PointF)msg.obj).x;
     	float y=((PointF)msg.obj).y;
 //    	penDraw.draw(x_value,y_value);
 //    	penDraw.getCanvas().drawColor(Color.WHITE,PorterDuff.Mode.CLEAR);
     	penDraw.draw(x, y);
-    	map_image.setImageBitmap(mapLoader.getBitmap());
+    	point_image.invalidate();
+    	//map_image.invalidate();
+    	//map_image.setImageBitmap(mapLoader.getBitmap());
 //    	x_value=x_value+20.5f;
 //    	y_value=y_value+20.5f;
     }
@@ -230,7 +241,7 @@ public class WifiActivity extends Activity {
 	        switch (v.getId()) {  
 	           case R.id.scanWifi:
 	        	   locatEstiTask =new LocationEstimateTask(wifiService,fileService,eventQueue,memoryQueue);
-        		   timer.scheduleAtFixedRate(locatEstiTask, 0, 1000);
+        		   timer.scheduleAtFixedRate(locatEstiTask, 0, 500);
 	        	   if(!consumer.isAlive())
 	        	   consumer.start();
 	        	   btn_scan.setEnabled(false);

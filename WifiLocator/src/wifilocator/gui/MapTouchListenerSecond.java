@@ -20,7 +20,7 @@ import android.widget.ImageView;
  * @author Eric
  * @version 0
  */
-public class MapTouchListener implements OnTouchListener{
+public class MapTouchListenerSecond implements OnTouchListener{
 
 	private static int NONE=0;
 	private static int DRAG=1;
@@ -41,7 +41,7 @@ public class MapTouchListener implements OnTouchListener{
 	 * @param map_image
 	 * @param map
 	 */
-	public MapTouchListener(ImageView map_image,ImageView point_image)
+	public MapTouchListenerSecond(ImageView map_image,ImageView point_image)
 	{
 		currentMatrix=new Matrix();
 		savedMatrix=new Matrix();
@@ -101,7 +101,7 @@ public class MapTouchListener implements OnTouchListener{
 			break;
 		}
 		map_image.setImageMatrix(currentMatrix);
-		point_image.dispatchTouchEvent(event);
+		//point_image.dispatchTouchEvent(event);
 		return true;
 	}
 	

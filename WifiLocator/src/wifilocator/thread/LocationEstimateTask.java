@@ -4,8 +4,14 @@
 package wifilocator.thread;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimerTask;
+import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 
 import android.graphics.PointF;
@@ -59,9 +65,13 @@ public class LocationEstimateTask extends TimerTask{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		wifiService.startScan();
-		List<ScanResult> wifiList=wifiService.getWifiList();
-		Signature userSignature=new Signature(wifiList,System.currentTimeMillis());
+		Vector<Signature> userSigVector=new Vector<Signature>();
+		for(int i=0;i<5;i++)
+		{
+			wifiService.startScan();
+			userSigVector.add(new Signature(wifiService.getWifiList(),System.currentTimeMillis()));
+		}
+		Signature userSignature=averageSignature(userSigVector);
 		userLocation.setUserSignature(userSignature);
 		PointF userPoint;
 		try {
@@ -94,5 +104,40 @@ public class LocationEstimateTask extends TimerTask{
 	public BlockingQueue<PointF> getEventQueue()
 	{
 		return eventQueue;
+	}
+	
+	public Signature averageSignature(Vector<Signature> userSigVector)
+	{
+		Signature sig=new Signature();
+		Map<String,ArrayList<Integer>> sigMap=new HashMap<String,ArrayList<Integer>>();
+		String tmp;
+		for(int i=0;i<userSigVector.size();i++)
+		{
+			Map<String,Integer> tempMap=userSigVector.get(i).getHashMap();
+			Iterator<String> it=tempMap.keySet().iterator();
+			while(it.hasNext())
+			{
+				tmp=it.next();
+				if(!sigMap.containsKey(tmp))
+				{
+					sigMap.put(tmp, new ArrayList<Integer>());
+				}
+				sigMap.get(tmp).add(tempMap.get(tmp));
+			}
+		}
+		Iterator<String> itt=sigMap.keySet().iterator();
+		while(itt.hasNext())
+		{
+			tmp=itt.next();
+			ArrayList<Integer> valueList=sigMap.get(tmp);
+			int sum=0;
+			for(int i=0;i<valueList.size();i++)
+			{
+				sum+=valueList.get(i);
+			}
+			sum=sum/valueList.size();
+			sig.getHashMap().put(tmp, sum);
+		}
+		return sig;
 	}
 }

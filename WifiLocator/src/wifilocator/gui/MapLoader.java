@@ -17,8 +17,9 @@ public class MapLoader {
 
 	private Context context;
 	private ImageView mapView;
+	private ImageView pointView;
 	private Bitmap map;
-	private MapTouchListener mapTouchListener;
+	private MapTouchListenerSecond mapTouchListener;
 	
 	/**
 	 * Contructor fuction
@@ -26,10 +27,11 @@ public class MapLoader {
 	 * @param context 
 	 * @param mapView
 	 */
-	public MapLoader(Context context,ImageView mapView)
+	public MapLoader(Context context,ImageView mapView,ImageView pointView)
 	{
 		this.setContext(context);
 		this.setMapView(mapView);
+		this.setPointView(pointView);
 	}
 	
 	/**
@@ -42,7 +44,7 @@ public class MapLoader {
 		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		map=tempmap.createScaledBitmap(tempmap, 1000, 2045, false);
 		mapView.setImageBitmap(map);
-		mapTouchListener=new MapTouchListener(mapView,map);
+		mapTouchListener=new MapTouchListenerSecond(mapView,pointView);
 		mapView.setOnTouchListener(mapTouchListener);
 	}
 
@@ -74,10 +76,10 @@ public class MapLoader {
 		this.context = context;
 	}
 	
-	public void setMapTouchListener(MapTouchListener mapTouchListener)
-	{
-		this.mapTouchListener=mapTouchListener;
-	}
+//	public void setMapTouchListener(MapTouchListener mapTouchListener)
+//	{
+//		this.mapTouchListener=mapTouchListener;
+//	}
 	
 	public Bitmap getBitmap()
 	{
@@ -89,6 +91,20 @@ public class MapLoader {
 		//map=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		Bitmap tempmap=BitmapFactory.decodeResource(context.getResources(),id).copy(Bitmap.Config.ARGB_8888, true);
 		map=tempmap.createScaledBitmap(tempmap, 1000, 2045, false);
+	}
+
+	/**
+	 * @return the pointView
+	 */
+	public ImageView getPointView() {
+		return pointView;
+	}
+
+	/**
+	 * @param pointView the pointView to set
+	 */
+	public void setPointView(ImageView pointView) {
+		this.pointView = pointView;
 	}
 	
 }

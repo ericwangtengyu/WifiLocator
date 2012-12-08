@@ -4,6 +4,7 @@
 package wifilocator.gui;
 
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,11 +28,12 @@ public class LocationDraw {
 	
 	public void draw(float x,float y)
 	{
-		canvas.save();
+		//canvas.save();
+		canvas.drawColor(Color.TRANSPARENT,PorterDuff.Mode.CLEAR);
 		Paint paint = new Paint();  
         paint.setColor(Color.RED);
         canvas.drawCircle(x, y, 10, paint);
-        canvas.restore();
+        //canvas.restore();
 	}
 	
 	public void changeMap(Bitmap map)

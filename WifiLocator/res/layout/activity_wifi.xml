@@ -70,5 +70,18 @@
         android:layout_marginTop="34dp"
         android:scaleType="matrix" >
     </ImageView>
+    
+    <ImageView
+        android:id="@+id/pointView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/scanWifi"
+        android:layout_gravity="center"
+        android:layout_marginTop="34dp"
+        android:scaleType="matrix" >
+    </ImageView>
 
 </RelativeLayout>

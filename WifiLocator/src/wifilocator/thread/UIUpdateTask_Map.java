@@ -3,6 +3,9 @@
  */
 package wifilocator.thread;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 import android.graphics.PointF;
@@ -23,6 +26,7 @@ public class UIUpdateTask_Map implements Runnable {
 	private BlockingQueue<PointF> memoryQueue;
 	private BlockingQueue<PointF> eventQueue;
 	private Handler handler;
+	private Queue<PointF> pointQueue;
 	
 	/**
 	 * Constructor function of UIUpdateTask_Map
@@ -36,6 +40,7 @@ public class UIUpdateTask_Map implements Runnable {
 		this.eventQueue=eventQueue;
 		this.memoryQueue=memoryQueue;
 		this.handler=handler;
+		pointQueue=new LinkedList<PointF>();
 	}
 	
 	public void run() {
@@ -44,6 +49,25 @@ public class UIUpdateTask_Map implements Runnable {
 			while(true)
 			{
 				PointF p=eventQueue.take();
+				if(pointQueue.size()<5)
+				{
+					pointQueue.offer(p);
+				}
+				else
+				{
+					pointQueue.poll();
+					pointQueue.offer(p);
+				}
+				float sumX=0;
+				float sumY=0;
+				Iterator<PointF> it=pointQueue.iterator();
+				while(it.hasNext())
+				{
+					PointF tP=it.next();
+					sumX+=tP.x;
+					sumY+=tP.y;
+				}
+				p.set(sumX/pointQueue.size(), sumY/pointQueue.size());
 				handler.obtainMessage(1,p).sendToTarget();
 				memoryQueue.put(p);
 			}
